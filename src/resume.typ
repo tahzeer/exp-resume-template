@@ -1,4 +1,18 @@
-#import "@preview/scienceicons:0.1.0": orcid-icon
+#let linked-text(value, link-prefix: "", text: "") = {
+  if value != "" {
+    let display = if text != "" {
+      text
+    } else {
+      value
+    }
+
+    if link-prefix != "" {
+      link(link-prefix + value)[#display]
+    } else {
+      display
+    }
+  }
+}
 
 #let resume(
   author: "",
@@ -7,16 +21,21 @@
   pronouns: "",
   location: "",
   email: "",
+  email-text: "",
   github: "",
+  github-text: "",
   linkedin: "",
+  linkedin-text: "",
   phone: "",
   personal-site: "",
-  orcid: "",
+  personal-site-text: "",
   accent-color: "#000000",
   font: "New Computer Modern",
   paper: "us-letter",
   author-font-size: 20pt,
   font-size: 10pt,
+  // How far section body content is indented relative to the section title
+  section-content-inset: 4pt,
   lang: "en",
   body,
 ) = {
@@ -40,15 +59,15 @@
     paper: paper,
   )
 
-  // Link styles
-  show link: underline
-
-
-  // Small caps for section titles
-  show heading.where(level: 2): it => [
-    #pad(top: 0pt, bottom: -10pt, [#smallcaps(it.body)])
-    #line(length: 100%, stroke: 1pt)
-  ]
+  // Link styles: underline with a small gap under the glyphs (Jake-style).
+  // `offset` is layout, not font-dependent; applies to every link site-wide.
+  show link: it => {
+    if type(it.dest) == str and it.dest.starts-with("tel:") {
+      it
+    } else {
+      underline(offset: 4pt, stroke: 0.8pt + luma(35%), it)
+    }
+  }
 
   // Accent Color Styling
   show heading: set text(
@@ -63,7 +82,7 @@
   show heading.where(level: 1): it => [
     #set align(author-position)
     #set text(
-      weight: 700,
+      weight: 600,
       size: author-font-size,
     )
     #pad(it.body)
@@ -72,41 +91,39 @@
   // Level 1 Heading
   [= #(author)]
 
-  // Personal Info Helper
-  let contact-item(value, prefix: "", link-type: "") = {
-    if value != "" {
-      if link-type != "" {
-        link(link-type + value)[#(prefix + value)]
-      } else {
-        value
-      }
-    }
-  }
-
   // Personal Info
   pad(
-    top: 0.25em,
+    top: 0em,
+    bottom: 0.25em,
     align(personal-info-position)[
       #{
         let items = (
-          contact-item(pronouns),
-          contact-item(phone, link-type: "tel:"),
-          contact-item(location),
-          contact-item(email, link-type: "mailto:"),
-          contact-item(github, link-type: "https://"),
-          contact-item(linkedin, link-type: "https://"),
-          contact-item(personal-site, link-type: "https://"),
-          contact-item(orcid, prefix: [#orcid-icon(color: rgb("#AECD54"))orcid.org/], link-type: "https://orcid.org/"),
+          linked-text(pronouns),
+          linked-text(phone, link-prefix: "tel:"),
+          linked-text(location),
+          linked-text(email, link-prefix: "mailto:", text: email-text),
+          linked-text(linkedin, link-prefix: "https://", text: linkedin-text),
+          linked-text(github, link-prefix: "https://", text: github-text),
+          linked-text(personal-site, link-prefix: "https://", text: personal-site-text),
         )
-        items.filter(x => x != none).join("  |  ")
+        items.filter(x => x != none).join(" | ")
       }
     ],
   )
 
-  // Main body.
+  // Main body: content indented under section titles; titles + rules stay full width
   set par(justify: true)
 
-  body
+  pad(left: section-content-inset, {
+    show heading.where(level: 2): it => {
+      pad(left: -section-content-inset)[
+        #set text(weight: 400)
+        #pad(top: 0pt, bottom: -10pt, [#smallcaps(it.body)])
+        #line(length: 100% + section-content-inset, stroke: 0.8pt + luma(35%))
+      ]
+    }
+    body
+  })
 }
 
 // Generic two by two component for resume
@@ -142,6 +159,12 @@
   } else {
     start-date + " " + sym.dash.em + " " + end-date
   }
+}
+
+// Summary section component: renders a justified paragraph of 2-3 lines
+#let summary(body) = {
+  set par(justify: true)
+  body
 }
 
 // Section components below
@@ -187,27 +210,25 @@
   )
 }
 
+// Project links: links: ((url: "github.com/...", text: "Github"), ...)
 #let project(
-  role: "",
   name: "",
-  url: "",
-  dates: "",
+  technologies: "",
+  links: (),
 ) = {
+  let link-items = links
+    .filter(item => item.at("url", default: "") != "")
+    .map(item => linked-text(
+      item.at("url"),
+      link-prefix: "https://",
+      text: item.at("text", default: ""),
+    ))
+
   generic-one-by-two(
     left: {
-      if role == "" {
-        [*#name* #if url != "" and dates != "" [ (#link("https://" + url)[#url])]]
-      } else {
-        [*#role*, #name #if url != "" and dates != ""  [ (#link("https://" + url)[#url])]]
-      }
+      [*#name*#if technologies != "" [ #sym.dash.em #technologies]]
     },
-    right: {
-      if dates == "" and url != "" {
-        link("https://" + url)[#url]
-      } else {
-        dates
-      }
-    },
+    right: link-items.join([ ∙ ]),
   )
 }
 
@@ -215,12 +236,13 @@
   name: "",
   issuer: "",
   url: "",
+  url-text: "",
   date: "",
 ) = {
-  [
+  block(width: 100%, spacing: 0.65em)[
     *#name*, #issuer
     #if url != "" {
-      [ (#link("https://" + url)[#url])]
+      [ (#linked-text(url, link-prefix: "https://", text: url-text))]
     }
     #h(1fr) #date
   ]

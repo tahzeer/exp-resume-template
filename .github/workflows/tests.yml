@@ -9,12 +9,11 @@ jobs:
   tests:
     strategy:
       matrix:
-        # add any other Typst versions that your package should support
-        typst-version: ["0.13"]
-        # the docs don't need to build with all versions supported by the package;
-        # the latest one is enough
+        # typst-test compares against pixel references, which are version-specific.
+        # keep a single version here so the reference matches CI output exactly.
+        typst-version: ["0.15"]
         include:
-          - typst-version: "0.13"
+          - typst-version: "0.15"
             doc: 1
     runs-on: ubuntu-latest
     steps:
