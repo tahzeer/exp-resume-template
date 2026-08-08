@@ -9,13 +9,15 @@ repository is the fictional John Doe starter under `template/`.
 ```text
 src/
   lib.typ             Package entrypoint; re-exports the public API.
-  resume.typ          Layout rules and reusable resume components.
+  resume.typ          The `resume` show-rule function and global layout.
+  components.typ      Section components: edu, work, project, certificates, ...
+  helpers.typ         Low-level helpers: linked-text, generic layouts, dates.
 template/
   main.typ            John Doe starter copied by `typst init`.
 docs/
   manual.typ          Package documentation source.
 tests/
-  debug/test.typ      Local component regression document.
+  snapshot/test.typ   Local component regression document.
 typst.toml            Package metadata and template configuration.
 ```
 
@@ -46,7 +48,8 @@ edge without introducing visible table borders.
 
 ## Development Flow
 
-1. Change reusable layout or positioning in `src/resume.typ`.
+1. Change the global layout in `src/resume.typ`, section components in
+   `src/components.typ`, or shared helpers in `src/helpers.typ`.
 2. Expose intentional customization knobs through `resume` or a component.
 3. Update `template/main.typ` with fictional examples of the public API.
 4. Run `just test` and `just doc`.

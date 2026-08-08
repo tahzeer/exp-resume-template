@@ -20,7 +20,7 @@ update *args:
 
 # package the library into the specified destination folder
 package target:
-  ./scripts/package "{{target}}"
+  ./scripts/package.sh "{{target}}"
 
 # install the library with the "@local" prefix
 install: (package "@local")
@@ -30,7 +30,7 @@ install-preview: (package "@preview")
 
 [private]
 remove target:
-  ./scripts/uninstall "{{target}}"
+  ./scripts/uninstall.sh "{{target}}"
 
 # uninstalls the library from the "@local" prefix
 uninstall: (remove "@local")

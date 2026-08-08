@@ -4,7 +4,7 @@ set -eu
 # adapted from https://github.com/johannes-wolf/cetz/blob/35c0868378cea5ad323cc0d9c2f76de8ed9ba5bd/scripts/package
 # licensed under Apache License 2.0
 
-. "$(dirname "${BASH_SOURCE[0]}")/setup"
+. "$(dirname "${BASH_SOURCE[0]}")/setup.sh"
 
 if (( $# < 1 )) || [[ "${1:-}" == "help" ]]; then
   echo "uninstall TARGET"

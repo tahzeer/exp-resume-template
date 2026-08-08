@@ -37,7 +37,7 @@ jobs:
 
       - name: Determine and check package metadata
         run: |
-          . scripts/setup
+          . scripts/setup.sh
           echo "PKG_NAME=${PKG_PREFIX}" >> "${GITHUB_ENV}"
           echo "PKG_VERSION=${VERSION}" >> "${GITHUB_ENV}"
 
