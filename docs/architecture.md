@@ -31,7 +31,7 @@ project. A sibling document can import the implementation during development:
 After publication, a document should import the package namespace instead:
 
 ```typst
-#import "@preview/exp-resume:0.0.1": *
+#import "@preview/exp-resume:0.0.2": *
 ```
 
 ## Typst Flow
@@ -80,7 +80,7 @@ by the Typst package manifest rules. The release sequence is:
 - `2.0.0`: incompatible change after stability; minor and patch reset to `0`.
 
 Released versions are immutable. Every release must update the manifest,
-changelog, documentation imports, and matching Git tag (`v0.0.1`, for example).
+changelog, documentation imports, and matching Git tag (`v0.0.2`, for example).
 
 ## Official References
 

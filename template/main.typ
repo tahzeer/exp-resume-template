@@ -1,4 +1,4 @@
-#import "@preview/exp-resume:0.0.1": *
+#import "@preview/exp-resume:0.0.2": *
 
 // Replace the example values below with your own information.
 #let name = "John Doe"

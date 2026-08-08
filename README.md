@@ -1,6 +1,6 @@
 # Exp Resume
 
-<div align="center">Version 0.0.1</div>
+<div align="center">Version 0.0.2</div>
 
 This is a simple Typst resume package designed as a practical starting point
 for an ATS-friendly resume. The repository contains only reusable package code
@@ -31,7 +31,7 @@ next to the clone, for example `../main.typ`, and import the local package with:
 Create a document from the published template:
 
 ```sh
-typst init @preview/exp-resume:0.0.1
+typst init @preview/exp-resume:0.0.2
 ```
 
 The generated `main.typ` contains the complete John Doe placeholder and the
@@ -41,7 +41,7 @@ information in your private document.
 The central pattern is:
 
 ```typst
-#import "@preview/exp-resume:0.0.1": *
+#import "@preview/exp-resume:0.0.2": *
 
 #show: resume.with(
   author: "John Doe",
@@ -92,12 +92,12 @@ Typst's requirement for a full `MAJOR.MINOR.PATCH` manifest version:
 - Never modify a released package version; publish a new version instead.
 
 Git tags must exactly match the manifest version with a `v` prefix, for example
-`v0.0.1`. The release workflow checks this before packaging.
+`v0.0.2`. The release workflow checks this before packaging.
 
 ## Publishing
 
 The release workflow runs for a tag matching the package version, for example
-`v0.0.1`. It packages the project and pushes a branch containing
+`v0.0.2`. It packages the project and pushes a branch containing
 `packages/preview/exp-resume/<version>` to `tahzeer/typst-packages`.
 
 The repository needs a `REGISTRY_TOKEN` secret with permission to push to that
