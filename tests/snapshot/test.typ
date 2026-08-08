@@ -35,7 +35,7 @@
  * Lines that start with == are formatted into section headings.
  * Available formatting functions include:
  * #summary(body)
- * #edu(dates: "", degree: "", gpa: "", institution: "", location: "", consistent: false)
+ * #edu(dates: "", degree: "", institution: "", location: "", consistent: false)
  * #work(company: "", dates: "", location: "", title: "")
  * #project(name: "", technologies: "", links: ())
  * #certificates(name: "", issuer: "", url: "", url-text: "", date: "")

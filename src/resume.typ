@@ -39,7 +39,7 @@
     ligatures: false
   )
 
-  // Reccomended to have 0.5in margin on all sides
+  // Recommended to have 0.5in margin on all sides
   set page(
     margin: (0.5in),
     paper: paper,

@@ -1,8 +1,8 @@
 #import "helpers.typ": linked-text, generic-two-by-two, generic-one-by-two
 
-// Summary section component: renders a justified paragraph of 2-3 lines
+// Summary section component: renders a justified paragraph of 2-3 lines.
+// `resume` already sets `set par(justify: true)` for the whole body.
 #let summary(body) = {
-  set par(justify: true)
   body
 }
 
@@ -11,7 +11,6 @@
   institution: "",
   dates: "",
   degree: "",
-  gpa: "",
   location: "",
   // Makes dates on upper right like rest of components
   consistent: false,
