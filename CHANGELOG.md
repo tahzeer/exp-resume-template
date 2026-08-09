@@ -1,6 +1,6 @@
 # Exp Resume Changelog
 
-## [v0.1.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.0)
+## [v0.0.4](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.0.4)
 
 ### Added
 - `#skills(category: "", items: "")` section component (same row rhythm as `#certificates`)
@@ -13,9 +13,11 @@
 - Soft-default paragraph rhythm is owned by `#resume` (`leading` / `gap`); documents should not need `#set par(...)` for normal use
 - Generic helpers accept an optional `spacing` length override (`auto` inherits the defaults above)
 
-### Docs
-- Manual documents spacing keys, `#skills`, and removes the non-existent `edu-entry` helper
-- README and architecture updated for `0.1.0` and `spacing.typ`
+### Docs / tooling
+- Manual documents spacing keys and `#skills`; removes the non-existent `edu-entry` helper
+- README and architecture drop non-essential version pins; sample image uses a relative path
+- `scripts/bump.sh` updates all required pins and fills CHANGELOG bullets from commits since the previous tag
+- Refresh snapshot reference for Typst 0.15
 
 ## [v0.0.3](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.0.3)
 
