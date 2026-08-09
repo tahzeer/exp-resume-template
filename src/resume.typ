@@ -21,7 +21,7 @@
   author-font-size: 20pt,
   font-size: 10pt,
   // How far section body content is indented relative to the section title
-  section-content-inset: 4pt,
+  section-content-inset: 2pt,
   lang: "en",
   body,
 ) = {
@@ -102,7 +102,7 @@
 
   pad(left: section-content-inset, {
     show heading.where(level: 2): it => {
-      pad(left: -section-content-inset)[
+      pad(left: -section-content-inset, bottom: -2pt)[
         #set text(weight: 400)
         #pad(top: 0pt, bottom: -10pt, [#smallcaps(it.body)])
         #line(length: 100% + section-content-inset, stroke: 0.8pt + luma(35%))
