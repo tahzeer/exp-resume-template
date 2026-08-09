@@ -31,7 +31,7 @@ project. A sibling document can import the implementation during development:
 After publication, a document should import the package namespace instead:
 
 ```typst
-#import "@preview/exp-resume:0.0.2": *
+#import "@preview/exp-resume:0.0.3": *
 ```
 
 ## Typst Flow
@@ -73,14 +73,14 @@ The manifest uses [Semantic Versioning 2.0.0](https://semver.org/), as required
 by the Typst package manifest rules. The release sequence is:
 
 - `0.0.1`: initial development release.
-- `0.0.2`: backward-compatible bug fix.
+- `0.0.2` / `0.0.3`: backward-compatible bug fixes.
 - `0.1.0`: backward-compatible public feature; patch resets to `0`.
 - `0.2.0`: incompatible change during the unstable `0.x` phase.
 - `1.0.0`: first stable public API.
 - `2.0.0`: incompatible change after stability; minor and patch reset to `0`.
 
 Released versions are immutable. Every release must update the manifest,
-changelog, documentation imports, and matching Git tag (`v0.0.2`, for example).
+changelog, documentation imports, and matching Git tag (`v0.0.3`, for example).
 
 ## Official References
 
