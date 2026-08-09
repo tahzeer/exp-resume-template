@@ -4,7 +4,7 @@
 #set heading(numbering: "1.")
 
 #let pkg = "exp-resume"
-#let version = "0.0.3"
+#let version = "0.1.0"
 
 = Introduction
 
@@ -54,6 +54,13 @@ body:
   dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
 )
 - Replace this placeholder with an accomplishment.
+
+== Skills
+
+#skills(
+  category: "Languages",
+  items: "Python, Go, TypeScript, SQL, Bash",
+)
 ```
 
 Lines that start with `==` are formatted into small-caps section headings with
@@ -95,15 +102,16 @@ contains commented example values.
 
 = Spacing
 
-`default-spacing` is the soft recommendation used when `spacing` is omitted.
-Pass a partial dictionary to override keys:
+`default-spacing` is exported from the package and used when `spacing` is
+omitted. It is a soft recommendation: examples leave it unset. Pass a partial
+dictionary to override keys:
 
 ```typst
-#import "@preview/exp-resume:0.0.2": *
+#import "@preview/#pkg:#version": *
 
 #show: resume.with(
   author: "John Doe",
-  spacing: (gap: 0.85em),
+  spacing: (gap: 0.85em, row: 0.65em),
 )
 ```
 
@@ -112,15 +120,23 @@ Or merge with the exported defaults:
 ```typst
 #show: resume.with(
   author: "John Doe",
-  spacing: default-spacing + (leading: 0.5em, gap: 0.9em),
+  spacing: default-spacing + (leading: 0.5em),
 )
 ```
 
-Keys: `leading`, `gap`, `row`, `after-header`, `after-section-title`,
-`after-section-rule`, `rule-stroke`, `link-offset`, `row-delta`.
-`gap` is paragraph spacing and the space above entry headers.
-`row` is the tighter space for certificate/skill rows and under entry
-titles before their first bullet.
+#table(
+  columns: (auto, 1fr),
+  [*Key*], [*Role*],
+  [`leading`], [Paragraph leading (line rhythm inside a paragraph)],
+  [`gap`], [Paragraph spacing and space above entry headers],
+  [`row`], [Certificate/skill row spacing, and space under an entry title before its first bullet],
+  [`after-header`], [Space under the contact row],
+  [`after-section-title`], [Space between the section title and its rule],
+  [`after-section-rule`], [Space between the section rule and body],
+  [`rule-stroke`], [Stroke for section rules and link underlines],
+  [`link-offset`], [Underline offset under links],
+  [`row-delta`], [Optical size nudge between the two rows of `generic-two-by-two`],
+)
 
 = Section Components
 
@@ -160,6 +176,7 @@ the bottom-right, matching the other components.
   location: "Example City, EX",
   dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
 )
+- Built reliable services and shipped measurable improvements.
 ```
 
 == Projects
@@ -180,6 +197,8 @@ Pass multiple `links` as `(url, text)` dictionaries. They are joined with
 
 == Certificates
 
+One row per call. Consecutive rows share the `row` spacing token.
+
 ```typst
 #certificates(
   name: "Example Certification",
@@ -191,6 +210,8 @@ Pass multiple `links` as `(url, text)` dictionaries. They are joined with
 ```
 
 == Skills
+
+One row per call, same spacing path as certificates:
 
 ```typst
 #skills(
@@ -210,8 +231,8 @@ Pass multiple `links` as `(url, text)` dictionaries. They are joined with
 
 = Generic Helpers
 
-These helpers do not apply any formatting beyond layout and can be used to
-build custom entries.
+These helpers provide layout without section-specific formatting and can be
+used to build custom entries.
 
 == dates-helper
 
@@ -233,7 +254,9 @@ Renders `value` as a hyperlink when a `link-prefix` is given, optionally using
 
 == generic-one-by-two
 
-Places `left` and `right` on one line, with `right` pushed to the right edge:
+Places `left` and `right` on one line, with `right` pushed to the right edge.
+By default uses `gap` above and `row` below. Pass `spacing: <length>` to set
+both sides explicitly.
 
 ```typst
 #generic-one-by-two(left: "Title", right: "Date")
@@ -242,7 +265,8 @@ Places `left` and `right` on one line, with `right` pushed to the right edge:
 == generic-two-by-two
 
 Places two pairs on two lines, with each right-hand cell pushed to the right
-edge:
+edge. Same default above/below behavior as `generic-one-by-two`. The top row
+is slightly larger than the bottom row by `row-delta`.
 
 ```typst
 #generic-two-by-two(
@@ -251,13 +275,4 @@ edge:
   bottom-left: "Company",
   bottom-right: "Location",
 )
-```
-
-== edu-entry
-
-Renders a single education row of `year`, `institution`, and `grade`, with the
-cells spread across the line:
-
-```typst
-#edu-entry(year: "2020", institution: "Example University", grade: "B.Tech")
 ```

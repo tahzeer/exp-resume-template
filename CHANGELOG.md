@@ -1,5 +1,22 @@
 # Exp Resume Changelog
 
+## [v0.1.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.0)
+
+### Added
+- `#skills(category: "", items: "")` section component (same row rhythm as `#certificates`)
+- `default-spacing` export and `resume.with(spacing: (...))` overrides
+- `src/spacing.typ` with named tokens (`leading`, `gap`, `row`, section chrome, link/rule styles)
+
+### Changed
+- Entry headers use `gap` above and `row` below; lists use `block(above: row)` so title/company → first bullet matches `row`
+- Certificates and skills share an `info-row` helper spaced with `row`
+- Soft-default paragraph rhythm is owned by `#resume` (`leading` / `gap`); documents should not need `#set par(...)` for normal use
+- Generic helpers accept an optional `spacing` length override (`auto` inherits the defaults above)
+
+### Docs
+- Manual documents spacing keys, `#skills`, and removes the non-existent `edu-entry` helper
+- README and architecture updated for `0.1.0` and `spacing.typ`
+
 ## [v0.0.3](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.0.3)
 
 - Tighten entry-header layout: wrap `generic-two-by-two` / `generic-one-by-two` in blocks with `below: 0.8em`, and nudge top/bottom row font sizes by `±0.25pt`

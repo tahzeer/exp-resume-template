@@ -1,4 +1,4 @@
-#import "@preview/exp-resume:0.0.3": *
+#import "@preview/exp-resume:0.1.0": *
 
 // Replace the example values below with your own information.
 #let name = "John Doe"
@@ -48,8 +48,8 @@
  * #generic-two-by-two(top-left: "", top-right: "", bottom-left: "", bottom-right: "")
  * #generic-one-by-two(left: "", right: "")
  * #dates-helper(start-date: "", end-date: "")
- * #edu-entry(year: "", institution: "", grade: "")
  * #linked-text(value, link-prefix: "", text: "")
+ * #default-spacing  // resume.with(spacing: (...)) overrides
  */
 
 == Summary

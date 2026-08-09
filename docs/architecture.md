@@ -10,8 +10,10 @@ repository is the fictional John Doe starter under `template/`.
 src/
   lib.typ             Package entrypoint; re-exports the public API.
   resume.typ          The `resume` show-rule function and global layout.
-  components.typ      Section components: edu, work, project, certificates, ...
+  components.typ      Section components: summary, edu, work, project,
+                      certificates, skills, extracurriculars.
   helpers.typ         Low-level helpers: linked-text, generic layouts, dates.
+  spacing.typ         Soft-default spacing tokens and spacing state.
 template/
   main.typ            John Doe starter copied by `typst init`.
 docs/
@@ -31,25 +33,35 @@ project. A sibling document can import the implementation during development:
 After publication, a document should import the package namespace instead:
 
 ```typst
-#import "@preview/exp-resume:0.0.3": *
+#import "@preview/exp-resume:0.1.0": *
 ```
 
 ## Typst Flow
 
 The document starts with `#show: resume.with(...)`. Typst passes the rest of
 the document as the `body` argument to `resume`, which establishes global text,
-page, link, heading, and paragraph rules before rendering that body.
+page, link, heading, paragraph, and block rules before rendering that body.
 
-The `resume` function renders the name and contact row. Components such as
-`edu`, `work`, `project`, and `extracurriculars` return formatted content that
-can be placed below level-two headings (`== Section`). The two generic helpers
-use `h(1fr)` as a flexible spacer, which pushes dates or links to the right
-edge without introducing visible table borders.
+`resume` merges optional `spacing` overrides into `default-spacing`, updates
+the spacing state used by helpers/components, and renders the name and contact
+row. Components such as `edu`, `work`, `project`, `certificates`, `skills`, and
+`extracurriculars` return formatted content that can be placed below level-two
+headings (`== Section`). The generic helpers use `h(1fr)` as a flexible
+spacer, which pushes dates or links to the right edge without introducing
+visible table borders.
+
+Spacing soft defaults (see `src/spacing.typ`):
+
+- `leading` — paragraph leading
+- `gap` — paragraph spacing and space above entry headers
+- `row` — certificate/skill rows, and space under an entry title before its
+  first bullet (lists set `block(above: row)` so tight lists honor this)
 
 ## Development Flow
 
 1. Change the global layout in `src/resume.typ`, section components in
-   `src/components.typ`, or shared helpers in `src/helpers.typ`.
+   `src/components.typ`, shared helpers in `src/helpers.typ`, or tokens in
+   `src/spacing.typ`.
 2. Expose intentional customization knobs through `resume` or a component.
 3. Update `template/main.typ` with fictional examples of the public API.
 4. Run `just test` and `just doc`.
@@ -74,13 +86,13 @@ by the Typst package manifest rules. The release sequence is:
 
 - `0.0.1`: initial development release.
 - `0.0.2` / `0.0.3`: backward-compatible bug fixes.
-- `0.1.0`: backward-compatible public feature; patch resets to `0`.
+- `0.1.0`: spacing system, `#skills`, and related public API surface.
 - `0.2.0`: incompatible change during the unstable `0.x` phase.
 - `1.0.0`: first stable public API.
 - `2.0.0`: incompatible change after stability; minor and patch reset to `0`.
 
 Released versions are immutable. Every release must update the manifest,
-changelog, documentation imports, and matching Git tag (`v0.0.3`, for example).
+changelog, documentation imports, and matching Git tag (`v0.1.0`, for example).
 
 ## Official References
 
