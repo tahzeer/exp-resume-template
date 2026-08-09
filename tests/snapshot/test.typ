@@ -25,7 +25,6 @@
   phone: phone,
   personal-site: personal-site,
   personal-site-text: personal-site-text,
-  // Accent color is optional. Feel free to remove the next line if you want your resume to be in black and white
   accent-color: "#26428b",
   author-position: center,
   personal-info-position: center,
@@ -39,13 +38,13 @@
  * #work(company: "", dates: "", location: "", title: "")
  * #project(name: "", technologies: "", links: ())
  * #certificates(name: "", issuer: "", url: "", url-text: "", date: "")
+ * #skills(category: "", items: "")
  * #extracurriculars(activity: "", dates: "")
  *
  * Generic layout helpers:
  * #generic-two-by-two(top-left: "", top-right: "", bottom-left: "", bottom-right: "")
  * #generic-one-by-two(left: "", right: "")
  * #dates-helper(start-date: "", end-date: "")
- * #edu-entry(year: "", institution: "", grade: "")
  * #linked-text(value, link-prefix: "", text: "")
  */
 == Summary
@@ -97,6 +96,16 @@
 - Built an open-source project with a clear API, automated tests, and documentation
 - Designed the system to remain easy to extend as requirements change
 
+#project(
+  name: "Example Toolkit",
+  technologies: "Go, PostgreSQL",
+  links: (
+    (url: "github.com/johndoe/example-toolkit", text: "Github"),
+  ),
+)
+- Packaged reusable utilities for internal services and local development
+- Added CI checks for formatting, tests, and basic security scanning
+
 == Certificates
 
 #certificates(
@@ -107,6 +116,14 @@
   url-text: "Certificate",
 )
 
+#certificates(
+  name: "Example Cloud Associate",
+  issuer: "Example Cloud",
+  date: "Jan 2023",
+  url: "example.com/cloud",
+  url-text: "Credential",
+)
+
 == Activities
 
 #extracurriculars(
@@ -115,6 +132,20 @@
 )
 - Contributed documentation, bug fixes, and mentoring to a community project
 
+#extracurriculars(
+  activity: "Example Campus Hackathon Club",
+  dates: dates-helper(start-date: "Sep 2021", end-date: "May 2023"),
+)
+- Organised workshops and helped teams ship weekend prototypes
+
 == Skills
-*Programming Languages*: Python, JavaScript, TypeScript, Java, SQL, Bash
-*Technologies*: Git, Linux, Docker, PostgreSQL, React, REST APIs
+
+#skills(
+  category: "Programming Languages",
+  items: "Python, JavaScript, TypeScript, Java, SQL, Bash",
+)
+
+#skills(
+  category: "Technologies",
+  items: "Git, Linux, Docker, PostgreSQL, React, REST APIs",
+)

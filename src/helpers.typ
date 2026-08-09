@@ -1,3 +1,5 @@
+#import "spacing.typ": spacing-state
+
 #let linked-text(value, link-prefix: "", text: "") = {
   if value != "" {
     let display = if text != "" {
@@ -14,33 +16,41 @@
   }
 }
 
-// Generic two by two component for resume
-// `above` / `below` control the gap before and after the block (`auto` = par.spacing)
+// Two-row header block (title/dates over company/location, etc.)
 #let generic-two-by-two(
   top-left: "",
   top-right: "",
   bottom-left: "",
   bottom-right: "",
-  above: auto,
-  below: auto,
-) = {
-  block(width: 100%, above: above, below: 0.8em)[
-    #text(size: 1em + 0.25pt)[#top-left #h(1fr) #top-right] \
-    #text(size: 1em - 0.25pt)[#bottom-left #h(1fr) #bottom-right]
+  spacing: auto,
+) = context {
+  let s = spacing-state.get()
+  let body = [
+    #text(size: 1em + s.row-delta)[#top-left #h(1fr) #top-right] \
+    #text(size: 1em - s.row-delta)[#bottom-left #h(1fr) #bottom-right]
   ]
+  if spacing == auto {
+    block(width: 100%, above: s.gap, below: s.row, body)
+  } else {
+    block(width: 100%, spacing: spacing, body)
+  }
 }
 
-// Generic one by two component for resume
-// `above` / `below` control the gap before and after the block (`auto` = par.spacing)
+// Single-row header block (project name/links, activity/dates, etc.)
 #let generic-one-by-two(
   left: "",
   right: "",
-  above: auto,
-  below: auto,
-) = {
-  block(width: 100%, above: above, below: 0.8em)[
+  spacing: auto,
+) = context {
+  let s = spacing-state.get()
+  let body = [
     #left #h(1fr) #right
   ]
+  if spacing == auto {
+    block(width: 100%, above: s.gap, below: s.row, body)
+  } else {
+    block(width: 100%, spacing: spacing, body)
+  }
 }
 
 #let dates-helper(

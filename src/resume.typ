@@ -1,4 +1,5 @@
 #import "helpers.typ": linked-text
+#import "spacing.typ": default-spacing, spacing-state
 
 #let resume(
   author: "",
@@ -20,42 +21,35 @@
   paper: "us-letter",
   author-font-size: 20pt,
   font-size: 10pt,
-  // How far section body content is indented relative to the section title
   section-content-inset: 2pt,
+  spacing: (:),
   lang: "en",
   body,
 ) = {
+  let s = default-spacing + spacing
 
-  // Sets document metadata
   set document(author: author, title: author)
 
-  // Document-wide formatting, including font and margins
   set text(
-    // LaTeX style font
     font: font,
     size: font-size,
     lang: lang,
-    // Disable ligatures so ATS systems do not get confused when parsing fonts.
-    ligatures: false
+    ligatures: false,
   )
 
-  // Recommended to have 0.5in margin on all sides
   set page(
     margin: (0.5in),
     paper: paper,
   )
 
-  // Link styles: underline with a small gap under the glyphs (Jake-style).
-  // `offset` is layout, not font-dependent; applies to every link site-wide.
   show link: it => {
     if type(it.dest) == str and it.dest.starts-with("tel:") {
       it
     } else {
-      underline(offset: 4pt, stroke: 0.8pt + luma(35%), it)
+      underline(offset: s.link-offset, stroke: s.rule-stroke, it)
     }
   }
 
-  // Accent Color Styling
   show heading: set text(
     fill: rgb(accent-color),
   )
@@ -64,7 +58,6 @@
     fill: rgb(accent-color),
   )
 
-  // Name will be aligned left, bold and big
   show heading.where(level: 1): it => [
     #set align(author-position)
     #set text(
@@ -74,13 +67,13 @@
     #pad(it.body)
   ]
 
-  // Level 1 Heading
+  spacing-state.update(s)
+
   [= #(author)]
 
-  // Personal Info
   pad(
     top: 0em,
-    bottom: 0.25em,
+    bottom: s.after-header,
     align(personal-info-position)[
       #{
         let items = (
@@ -97,15 +90,17 @@
     ],
   )
 
-  // Main body: content indented under section titles; titles + rules stay full width
-  set par(justify: true)
+  set par(justify: true, leading: s.leading, spacing: s.gap)
+  set block(spacing: s.gap)
+  // Tight lists otherwise attach with leading and ignore the entry header's below.
+  show list: set block(above: s.row)
 
   pad(left: section-content-inset, {
     show heading.where(level: 2): it => {
-      pad(left: -section-content-inset, bottom: -2pt)[
+      pad(left: -section-content-inset, bottom: s.after-section-rule)[
         #set text(weight: 400)
-        #pad(top: 0pt, bottom: -10pt, [#smallcaps(it.body)])
-        #line(length: 100% + section-content-inset, stroke: 0.8pt + luma(35%))
+        #pad(top: 0pt, bottom: s.after-section-title, [#smallcaps(it.body)])
+        #line(length: 100% + section-content-inset, stroke: s.rule-stroke)
       ]
     }
     body

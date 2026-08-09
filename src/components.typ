@@ -1,21 +1,24 @@
 #import "helpers.typ": linked-text, generic-two-by-two, generic-one-by-two
+#import "spacing.typ": spacing-state
 
-// Summary section component: renders a justified paragraph of 2-3 lines.
 #let summary(body) = {
   body
 }
 
-// Section components below
+// Single full-width row used by certificates and skills (same spacing).
+#let info-row(body) = context {
+  let s = spacing-state.get()
+  block(width: 100%, spacing: s.row, body)
+}
+
 #let edu(
   institution: "",
   dates: "",
   degree: "",
   location: "",
-  // Makes dates on upper right like rest of components
   consistent: false,
 ) = {
   if consistent {
-    // edu-constant style (dates top-right, location bottom-right)
     generic-two-by-two(
       top-left: strong(institution),
       top-right: dates,
@@ -23,7 +26,6 @@
       bottom-right: emph(location),
     )
   } else {
-    // original edu style (location top-right, dates bottom-right)
     generic-two-by-two(
       top-left: strong(institution),
       top-right: location,
@@ -47,7 +49,6 @@
   )
 }
 
-// Project links: links: ((url: "github.com/...", text: "Github"), ...)
 #let project(
   name: "",
   technologies: "",
@@ -76,12 +77,21 @@
   url-text: "",
   date: "",
 ) = {
-  block(width: 100%, spacing: 0.65em)[
+  info-row[
     *#name*, #issuer
     #if url != "" {
       [ (#linked-text(url, link-prefix: "https://", text: url-text))]
     }
     #h(1fr) #date
+  ]
+}
+
+#let skills(
+  category: "",
+  items: "",
+) = {
+  info-row[
+    *#category*: #items
   ]
 }
 

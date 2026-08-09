@@ -41,6 +41,7 @@
  * #work(company: "", dates: "", location: "", title: "")
  * #project(name: "", technologies: "", links: ())
  * #certificates(name: "", issuer: "", url: "", url-text: "", date: "")
+ * #skills(category: "", items: "")
  * #extracurriculars(activity: "", dates: "")
  *
  * Generic layout helpers:
@@ -131,6 +132,17 @@
 
 == Skills
 
-*Languages*: Python, Go, TypeScript, SQL, Bash \
-*Technologies*: FastAPI, React, PostgreSQL, Redis, Docker, Kubernetes \
-*Tools*: Linux, GitHub Actions, Neovim, rubber ducks
+#skills(
+  category: "Languages",
+  items: "Python, Go, TypeScript, SQL, Bash",
+)
+
+#skills(
+  category: "Technologies",
+  items: "FastAPI, React, PostgreSQL, Redis, Docker, Kubernetes",
+)
+
+#skills(
+  category: "Tools",
+  items: "Linux, GitHub Actions, Neovim, rubber ducks",
+)

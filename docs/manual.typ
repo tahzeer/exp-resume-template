@@ -86,10 +86,41 @@ The `resume` function accepts the following parameters:
   [pronouns], [Optional pronouns, shown in the contact row],
   [author-position], [Alignment of the name, defaults to left],
   [personal-info-position], [Alignment of the contact row, defaults to left],
+  [section-content-inset], [Body indent under section titles, defaults to 2pt],
+  [spacing], [Optional spacing overrides; see Spacing below],
 )
 
 Parameters that are optional can be omitted or set to `""`. The template
 contains commented example values.
+
+= Spacing
+
+`default-spacing` is the soft recommendation used when `spacing` is omitted.
+Pass a partial dictionary to override keys:
+
+```typst
+#import "@preview/exp-resume:0.0.2": *
+
+#show: resume.with(
+  author: "John Doe",
+  spacing: (gap: 0.85em),
+)
+```
+
+Or merge with the exported defaults:
+
+```typst
+#show: resume.with(
+  author: "John Doe",
+  spacing: default-spacing + (leading: 0.5em, gap: 0.9em),
+)
+```
+
+Keys: `leading`, `gap`, `row`, `after-header`, `after-section-title`,
+`after-section-rule`, `rule-stroke`, `link-offset`, `row-delta`.
+`gap` is paragraph spacing and the space above entry headers.
+`row` is the tighter space for certificate/skill rows and under entry
+titles before their first bullet.
 
 = Section Components
 
@@ -156,6 +187,15 @@ Pass multiple `links` as `(url, text)` dictionaries. They are joined with
   url: "example.com/cert",
   url-text: "Certificate",
   date: "Jun 2024",
+)
+```
+
+== Skills
+
+```typst
+#skills(
+  category: "Languages",
+  items: "Python, Go, TypeScript, SQL, Bash",
 )
 ```
 
