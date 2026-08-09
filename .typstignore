@@ -14,9 +14,11 @@ scripts
 tests
 build
 Justfile
-# PDF manuals should be included so that they can be linked, but not their sources
+# Docs sources stay out; PDF manuals are committed for README links (also
+# excluded in typst.toml so they are not in the download archive).
 docs/*
 !docs/*.pdf
 
+# Sample PDF stays out of Universe; PNG is linked from README so it must be
+# committed (and listed under typst.toml exclude).
 example-resume.pdf
-example-resume.png

@@ -34,7 +34,7 @@ After publication, a document should import the package namespace at the version
 from `typst.toml`:
 
 ```typst
-#import "@preview/exp-resume:0.1.0": *
+#import "@preview/exp-resume:0.1.1": *
 ```
 
 ## Typst Flow

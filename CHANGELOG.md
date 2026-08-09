@@ -1,5 +1,9 @@
 # Exp Resume Changelog
 
+## [v0.1.1](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.1)
+
+- Include `example-resume.png` in the Universe package tree (still excluded from the download archive) so the README sample image link resolves
+
 ## [v0.1.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.0)
 
 Minor release for the public API introduced in `0.0.4`:

@@ -35,7 +35,7 @@ next to the clone, for example `../main.typ`, and import the local package with:
 Create a document from the published template (version from `typst.toml`):
 
 ```sh
-typst init @preview/exp-resume:0.1.0
+typst init @preview/exp-resume:0.1.1
 ```
 
 The generated `main.typ` contains the complete John Doe placeholder and the
@@ -45,7 +45,7 @@ information in your private document.
 The central pattern is:
 
 ```typst
-#import "@preview/exp-resume:0.1.0": *
+#import "@preview/exp-resume:0.1.1": *
 
 #show: resume.with(
   author: "John Doe",
