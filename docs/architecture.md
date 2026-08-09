@@ -30,7 +30,8 @@ project. A sibling document can import the implementation during development:
 #import "exp-resume-template/src/lib.typ": *
 ```
 
-After publication, a document should import the package namespace instead:
+After publication, a document should import the package namespace at the version
+from `typst.toml`:
 
 ```typst
 #import "@preview/exp-resume:0.1.0": *
@@ -74,25 +75,23 @@ Spacing soft defaults (see `src/spacing.typ`):
 `packages/preview/{name}/{version}` is imported as
 `@preview/{name}:{version}`.
 
-The release workflow packages the repository and pushes it to
-`tahzeer/typst-packages`. It requires a `REGISTRY_TOKEN` GitHub secret with
-write access to that repository. The package manifest and `.typstignore` both
-exclude local build output and other non-package files.
+Run `./scripts/bump.sh` before tagging so the manifest, imports, changelog,
+and documentation stay aligned. Git tags must match the manifest with a `v`
+prefix. The release workflow packages the repository and pushes it to
+`tahzeer/typst-packages` (requires a `REGISTRY_TOKEN` secret). The package
+manifest and `.typstignore` both exclude local build output and other
+non-package files.
 
 ## Versioning
 
 The manifest uses [Semantic Versioning 2.0.0](https://semver.org/), as required
-by the Typst package manifest rules. The release sequence is:
+by the Typst package manifest rules:
 
-- `0.0.1`: initial development release.
-- `0.0.2` / `0.0.3`: backward-compatible bug fixes.
-- `0.1.0`: spacing system, `#skills`, and related public API surface.
-- `0.2.0`: incompatible change during the unstable `0.x` phase.
-- `1.0.0`: first stable public API.
-- `2.0.0`: incompatible change after stability; minor and patch reset to `0`.
-
-Released versions are immutable. Every release must update the manifest,
-changelog, documentation imports, and matching Git tag (`v0.1.0`, for example).
+- Patch: backward-compatible bug fixes.
+- Minor: backward-compatible public features (patch resets to `0`).
+- While major is `0`, treat breaking changes as a minor bump.
+- After `1.0.0`, breaking changes increment major (minor and patch reset to `0`).
+- Released versions are immutable; see `CHANGELOG.md` for history.
 
 ## Official References
 

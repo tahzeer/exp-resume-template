@@ -6,6 +6,10 @@ export TYPST_ROOT := root
 default:
 	@just --list --unsorted
 
+# bump package version (patch|minor|major|X.Y.Z); fill CHANGELOG before tagging
+bump *args:
+	./scripts/bump.sh {{ args }}
+
 # generate manual
 doc:
 	typst compile docs/manual.typ docs/manual.pdf

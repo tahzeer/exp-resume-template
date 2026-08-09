@@ -1,7 +1,5 @@
 # Exp Resume
 
-<div align="center">Version 0.1.0</div>
-
 This is a simple Typst resume package designed as a practical starting point
 for an ATS-friendly resume. The repository contains only reusable package code
 and fictional John Doe example content. Keep real resume documents outside the
@@ -9,7 +7,7 @@ repository.
 
 ## Sample Resume
 
-![example resume](https://raw.githubusercontent.com/tahzeer/exp-resume-template/v0.1.0/example-resume.png)
+![example resume](./example-resume.png)
 
 ## Repository Layout
 
@@ -34,7 +32,7 @@ next to the clone, for example `../main.typ`, and import the local package with:
 
 ## Quick Start
 
-Create a document from the published template:
+Create a document from the published template (version from `typst.toml`):
 
 ```sh
 typst init @preview/exp-resume:0.1.0
@@ -122,20 +120,25 @@ artifacts are ignored by Git and excluded from package output.
 The package follows [Semantic Versioning 2.0.0](https://semver.org/) and
 Typst's requirement for a full `MAJOR.MINOR.PATCH` manifest version:
 
-- `0.0.1` is the initial development release.
-- Increment the patch number for backward-compatible bug fixes, such as `0.0.3`.
-- Increment the minor number for backward-compatible public features, such as `0.1.0`, and reset patch to `0`.
-- While the major version is `0`, breaking changes should use the next minor version because the API is still unstable, such as `0.1.0` to `0.2.0`.
-- After the API stabilizes at `1.0.0`, increment the major number for breaking changes, such as `1.0.0` to `2.0.0`, and reset minor and patch to `0`.
+- Increment the patch number for backward-compatible bug fixes.
+- Increment the minor number for backward-compatible public features, and reset
+  patch to `0`.
+- While the major version is `0`, breaking changes should use the next minor
+  version because the API is still unstable.
+- After the API stabilizes at `1.0.0`, increment the major number for breaking
+  changes and reset minor and patch to `0`.
 - Never modify a released package version; publish a new version instead.
 
-Git tags must exactly match the manifest version with a `v` prefix, for example
-`v0.1.0`. The release workflow checks this before packaging.
+Git tags must exactly match the manifest version with a `v` prefix
+(`vMAJOR.MINOR.PATCH`). The release workflow checks this before packaging.
+
+Before tagging, run `./scripts/bump.sh` so `typst.toml`, package imports,
+changelog, and docs stay in sync. See `CHANGELOG.md` for release history.
 
 ## Publishing
 
-The release workflow runs for a tag matching the package version, for example
-`v0.1.0`. It packages the project and pushes a branch containing
+The release workflow runs for a tag matching the package version. It packages
+the project and pushes a branch containing
 `packages/preview/exp-resume/<version>` to `tahzeer/typst-packages`.
 
 The repository needs a `REGISTRY_TOKEN` secret with permission to push to that

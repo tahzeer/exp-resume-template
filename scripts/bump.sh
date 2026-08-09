@@ -1,23 +1,36 @@
 #!/usr/bin/env bash
 set -eu
 
-# Bump the package version across typst.toml, *.typ files, and CHANGELOG.md.
-# .md files (README.md, docs/architecture.md) are NOT updated — edit those manually.
+# Bump the package version everywhere it must stay in sync before tagging.
+#
+# Updates:
+#   - typst.toml                          version =
+#   - *.typ                               package version strings (imports, manual)
+#   - README.md, docs/architecture.md     @preview/exp-resume:<ver> pins only
+#   - CHANGELOG.md                        new vX.Y.Z stub entry
+#
+# Markdown should avoid non-essential version numbers so this script does not
+# have to maintain them. Prefer relative asset links and generic semver prose.
 #
 # Usage:
-#   ./scripts/bump.sh              # patch bump (0.0.1 → 0.0.2)
-#   ./scripts/bump.sh patch        # same as above
-#   ./scripts/bump.sh minor        # 0.0.1 → 0.1.0
-#   ./scripts/bump.sh major        # 0.0.1 → 1.0.0
+#   ./scripts/bump.sh              # patch bump
+#   ./scripts/bump.sh patch
+#   ./scripts/bump.sh minor
+#   ./scripts/bump.sh major
 #   ./scripts/bump.sh 1.2.3         # explicit version
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-# Read current version from typst.toml
+PKG_NAME="$(perl -ne 'print "$1" if /^name\s*=\s*"(.*)"/' typst.toml)"
 CURRENT="$(perl -ne 'print "$1" if /^version\s*=\s*"(.*)"/' typst.toml)"
+REPO_URL="$(perl -ne 'print "$1" if /^repository\s*=\s*"(.*)"/' typst.toml)"
 
-# Determine bump type / explicit version
+if [[ -z "$PKG_NAME" || -z "$CURRENT" ]]; then
+  echo "error: could not read name/version from typst.toml" >&2
+  exit 1
+fi
+
 if [[ $# -eq 0 ]]; then
   BUMP="patch"
 elif [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -46,17 +59,26 @@ if [[ "$NEW" == "$CURRENT" ]]; then
   exit 0
 fi
 
-echo "Bumping $CURRENT → $NEW"
+echo "Bumping $PKG_NAME $CURRENT → $NEW"
 
-# 1. Update typst.toml
+# 1. Manifest
 sed -i "s/^version = \"$CURRENT\"/version = \"$NEW\"/" typst.toml
 
-# 2. Update all .typ files (global string replace of old version → new)
-find . -name '*.typ' -not -path './.git/*' -print0 \
-  | xargs -0 sed -i "s/$CURRENT/$NEW/g"
+# 2. All Typst sources (template import, manual #let version, etc.)
+while IFS= read -r -d '' file; do
+  sed -i "s/$CURRENT/$NEW/g" "$file"
+done < <(find . -name '*.typ' -not -path './.git/*' -print0)
 
-# 3. Prepend CHANGELOG.md entry (after the title line)
-REPO_URL="$(perl -ne 'print "$1" if /^repository\s*=\s*"(.*)"/' typst.toml)"
+# 3. Markdown pins that must track the package version
+#    Only rewrite @preview/<pkg>:<ver> (covers typst init and #import examples).
+MD_FILES=(README.md docs/architecture.md)
+for file in "${MD_FILES[@]}"; do
+  if [[ -f "$file" ]]; then
+    sed -i "s|@preview/${PKG_NAME}:${CURRENT}|@preview/${PKG_NAME}:${NEW}|g" "$file"
+  fi
+done
+
+# 4. Changelog stub (after title line)
 {
   head -n 1 CHANGELOG.md
   echo ""
@@ -67,19 +89,36 @@ REPO_URL="$(perl -ne 'print "$1" if /^repository\s*=\s*"(.*)"/' typst.toml)"
   tail -n +3 CHANGELOG.md
 } > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
 
+# 5. Sanity: no stale package pins left for the old version
+STALE="$(
+  grep -RIn --exclude-dir=.git --exclude='CHANGELOG.md' --exclude='*.png' --exclude='*.pdf' \
+    -e "@preview/${PKG_NAME}:${CURRENT}" \
+    -e "version = \"${CURRENT}\"" \
+    -e "#let version = \"${CURRENT}\"" \
+    . || true
+)"
+if [[ -n "$STALE" ]]; then
+  echo ""
+  echo "warning: possible stale references to ${CURRENT}:" >&2
+  echo "$STALE" >&2
+fi
+
 echo ""
 echo "Updated:"
-echo "  typst.toml          version = \"$NEW\""
-echo "  *.typ files         $CURRENT → $NEW"
-echo "  CHANGELOG.md        v$NEW entry added"
+echo "  typst.toml                     version = \"$NEW\""
+echo "  *.typ                          ${CURRENT} → ${NEW}"
+echo "  README.md / docs/architecture  @preview/${PKG_NAME}: pins"
+echo "  CHANGELOG.md                   v${NEW} stub added"
 echo ""
-echo "Manual updates needed in .md files:"
-echo "  README.md           Version line, typst init, import examples"
-echo "  docs/architecture.md  @preview import example"
+echo "Still manual:"
+echo "  CHANGELOG.md                   replace \"<describe changes here>\""
+echo "  example-resume.pdf/.png        rebuild if the template output changed"
+echo "  docs/manual.pdf                just doc   (gitignored; for local/package)"
 echo ""
-echo "Next steps:"
-echo "  git add -A"
-echo "  git commit -m \"Release v$NEW\""
-echo "  git tag v$NEW"
-echo "  git push origin main"
-echo "  git push origin v$NEW   # triggers release workflow"
+echo "Pre-tag checklist:"
+echo "  1. Fill in CHANGELOG.md for v${NEW}"
+echo "  2. just ci                     # or: just test && just doc"
+echo "  3. git add -A && git commit -m \"Release v${NEW}\""
+echo "  4. git tag -a v${NEW} -m \"v${NEW}\""
+echo "  5. git push origin main && git push origin v${NEW}"
+echo "  6. gh release create v${NEW} --title \"v${NEW}\" --notes-from-tag"
