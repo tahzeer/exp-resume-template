@@ -1,5 +1,15 @@
 # Exp Resume Changelog
 
+## [v0.1.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.0)
+
+Minor release for the public API introduced in `0.0.4`:
+
+- `#skills` section component
+- `default-spacing` / `resume.with(spacing: (...))`
+- Named spacing tokens (`leading`, `gap`, `row`, …)
+
+See [v0.0.4](#v004) for the full change list.
+
 ## [v0.0.4](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.0.4)
 
 ### Added
