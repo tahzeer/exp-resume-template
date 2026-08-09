@@ -7,10 +7,12 @@ set -eu
 #   - typst.toml                          version =
 #   - *.typ                               package version strings (imports, manual)
 #   - README.md, docs/architecture.md     @preview/exp-resume:<ver> pins only
-#   - CHANGELOG.md                        new vX.Y.Z stub entry
+#   - CHANGELOG.md                        new vX.Y.Z entry from git commits
+#     since the previous tag (v$CURRENT, else latest tag, else repo root)
 #
 # Markdown should avoid non-essential version numbers so this script does not
 # have to maintain them. Prefer relative asset links and generic semver prose.
+# Review the generated CHANGELOG bullets; edit wording if needed, then commit.
 #
 # Usage:
 #   ./scripts/bump.sh              # patch bump
@@ -78,13 +80,37 @@ for file in "${MD_FILES[@]}"; do
   fi
 done
 
-# 4. Changelog stub (after title line)
+# 4. Changelog entry from commits since the previous release tag
+PREV_TAG=""
+if git rev-parse -q --verify "refs/tags/v${CURRENT}" >/dev/null; then
+  PREV_TAG="v${CURRENT}"
+elif PREV_TAG="$(git describe --tags --abbrev=0 2>/dev/null)"; then
+  :
+else
+  PREV_TAG=""
+fi
+
+CHANGELOG_BULLETS="$(
+  if [[ -n "$PREV_TAG" ]]; then
+    git log "${PREV_TAG}..HEAD" --pretty=format:'%s' --no-merges
+  else
+    git log HEAD --pretty=format:'%s' --no-merges
+  fi \
+    | sed '/^$/d' \
+    | grep -Ev "^Release v[0-9]+\.[0-9]+\.[0-9]+$" \
+    | sed 's/^/- /'
+)"
+
+if [[ -z "$CHANGELOG_BULLETS" ]]; then
+  CHANGELOG_BULLETS="- <no non-merge commits found since ${PREV_TAG:-repository start}>"
+fi
+
 {
   head -n 1 CHANGELOG.md
   echo ""
   echo "## [v$NEW](${REPO_URL}/releases/tag/v$NEW)"
   echo ""
-  echo "<describe changes here>"
+  echo "$CHANGELOG_BULLETS"
   echo ""
   tail -n +3 CHANGELOG.md
 } > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
@@ -108,15 +134,15 @@ echo "Updated:"
 echo "  typst.toml                     version = \"$NEW\""
 echo "  *.typ                          ${CURRENT} → ${NEW}"
 echo "  README.md / docs/architecture  @preview/${PKG_NAME}: pins"
-echo "  CHANGELOG.md                   v${NEW} stub added"
+echo "  CHANGELOG.md                   v${NEW} from commits${PREV_TAG:+ since ${PREV_TAG}}"
 echo ""
 echo "Still manual:"
-echo "  CHANGELOG.md                   replace \"<describe changes here>\""
+echo "  CHANGELOG.md                   review/edit generated bullets if you want"
 echo "  example-resume.pdf/.png        rebuild if the template output changed"
 echo "  docs/manual.pdf                just doc   (gitignored; for local/package)"
 echo ""
 echo "Pre-tag checklist:"
-echo "  1. Fill in CHANGELOG.md for v${NEW}"
+echo "  1. Review CHANGELOG.md for v${NEW}"
 echo "  2. just ci                     # or: just test && just doc"
 echo "  3. git add -A && git commit -m \"Release v${NEW}\""
 echo "  4. git tag -a v${NEW} -m \"v${NEW}\""

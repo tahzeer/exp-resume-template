@@ -133,7 +133,9 @@ Git tags must exactly match the manifest version with a `v` prefix
 (`vMAJOR.MINOR.PATCH`). The release workflow checks this before packaging.
 
 Before tagging, run `./scripts/bump.sh` so `typst.toml`, package imports,
-changelog, and docs stay in sync. See `CHANGELOG.md` for release history.
+changelog, and docs stay in sync. The bump script fills the new CHANGELOG
+section from commit messages since the previous tag (edit if you want). See
+`CHANGELOG.md` for release history.
 
 ## Publishing
 
