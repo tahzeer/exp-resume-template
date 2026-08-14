@@ -1,5 +1,10 @@
 # Exp Resume Changelog
 
+## [v0.1.2](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.2)
+
+- refactor(template): add usage of section-content-inset var in example resumes
+- fix(template): use en-dahses instead of em-dashes for date ranges
+
 ## [v0.1.1](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.1)
 
 - Include `example-resume.png` in the Universe package tree (still excluded from the download archive) so the README sample image link resolves
