@@ -23,9 +23,6 @@ repository.
 - [Manual](docs/manual.pdf) — full API reference and usage examples.
 - `typst.toml` defines the package and template entrypoints.
 
-Personal data is intentionally not stored here. A private document can live
-next to the clone, for example `../main.typ`, and import the local package with:
-
 ```typst
 #import "exp-resume-template/src/lib.typ": *
 ```
@@ -39,8 +36,7 @@ typst init @preview/exp-resume:0.1.1
 ```
 
 The generated `main.typ` contains the complete John Doe placeholder and the
-available component functions. Replace its values and content with your own
-information in your private document.
+available component functions.
 
 The central pattern is:
 
