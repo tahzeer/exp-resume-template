@@ -32,7 +32,7 @@ repository.
 Create a document from the published template (version from `typst.toml`):
 
 ```sh
-typst init @preview/exp-resume:0.1.1
+typst init @preview/exp-resume:0.1.2
 ```
 
 The generated `main.typ` contains the complete John Doe placeholder and the
@@ -41,7 +41,7 @@ available component functions.
 The central pattern is:
 
 ```typst
-#import "@preview/exp-resume:0.1.1": *
+#import "@preview/exp-resume:0.1.2": *
 
 #show: resume.with(
   author: "John Doe",

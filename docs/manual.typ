@@ -4,7 +4,7 @@
 #set heading(numbering: "1.")
 
 #let pkg = "exp-resume"
-#let version = "0.1.1"
+#let version = "0.1.2"
 
 = Introduction
 
