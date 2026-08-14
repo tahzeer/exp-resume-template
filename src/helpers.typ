@@ -60,6 +60,6 @@
   if start-date == "" {
     end-date
   } else {
-    start-date + " " + sym.dash.em + " " + end-date
+    start-date + " " + sym.dash.en + " " + end-date
   }
 }
