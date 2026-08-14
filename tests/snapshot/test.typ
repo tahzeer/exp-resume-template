@@ -28,6 +28,7 @@
   accent-color: "#26428b",
   author-position: center,
   personal-info-position: center,
+  section-content-inset: 0pt
 )
 
 /*

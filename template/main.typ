@@ -31,6 +31,7 @@
   paper: "us-letter",
   author-position: center,
   personal-info-position: center,
+  section-content-inset: 0pt
 )
 
 /*
