@@ -1,5 +1,15 @@
 # Exp Resume Changelog
 
+## [v0.2.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.2.0)
+
+Breaking changes to the experience header:
+
+- Replace `#work` with `#employer` and `#role`. The company is the bold top line, the location is italic on the right, and each title is a regular-weight line under it
+- The company and the first role stay one block. A later role has the same `gap` above it as any other header
+- Remove `consistent` from `#edu`. Location stays on the top right and dates on the bottom right
+- Remove `row-delta`. Both rows of a two-line header use the body size
+- Link underlines use the link text color. Section rules still use `rule-stroke`
+
 ## [v0.1.2](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.1.2)
 
 - refactor(template): add usage of section-content-inset var in example resumes
