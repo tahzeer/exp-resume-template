@@ -16,7 +16,7 @@
   }
 }
 
-// Two-row header block (title/dates over company/location, etc.)
+// Two-row header block. Both rows use the body size.
 #let generic-two-by-two(
   top-left: "",
   top-right: "",
@@ -26,8 +26,8 @@
 ) = context {
   let s = spacing-state.get()
   let body = [
-    #text(size: 1em + s.row-delta)[#top-left #h(1fr) #top-right] \
-    #text(size: 1em - s.row-delta)[#bottom-left #h(1fr) #bottom-right]
+    #top-left #h(1fr) #top-right \
+    #bottom-left #h(1fr) #bottom-right
   ]
   if spacing == auto {
     block(width: 100%, above: s.gap, below: s.row, body)

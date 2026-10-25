@@ -38,8 +38,8 @@
  * Lines that start with == are formatted into section headings.
  * Available formatting functions include:
  * #summary(body)
- * #edu(dates: "", degree: "", institution: "", location: "", consistent: false)
- * #work(company: "", dates: "", location: "", title: "")
+ * #edu(dates: "", degree: "", institution: "", location: "")
+ * #employer(company: "", location: "")[ #role(title: "", dates: "") ]
  * #project(name: "", technologies: "", links: ())
  * #certificates(name: "", issuer: "", url: "", url-text: "", date: "")
  * #skills(category: "", items: "")
@@ -69,22 +69,34 @@
 
 == Experience
 
-#work(
-  title: "Senior Bug Whisperer",
-  location: "Remote",
+#employer(
   company: "Infinite Loop Inc.",
-  dates: dates-helper(start-date: "Jul 2023", end-date: "Present"),
-)
-- Built reliable services and cut deploy anxiety with predictable CI
-- Wrote runbooks so clear that on-call stopped being a contact sport
+  location: "Remote",
+)[
+  #role(
+    title: "Senior Bug Whisperer",
+    dates: dates-helper(start-date: "Jul 2023", end-date: "Present"),
+  )
+  - Built reliable services and cut deploy anxiety with predictable CI
+  - Wrote runbooks so clear that on-call stopped being a contact sport
 
-#work(
-  title: "Software Engineering Intern",
-  location: "Byteburg, CA",
+  #role(
+    title: "Bug Whisperer",
+    dates: dates-helper(start-date: "Jul 2021", end-date: "Jun 2023"),
+  )
+  - Shipped the first on-call runbook
+]
+
+#employer(
   company: "Stack Overflow Overflow",
-  dates: dates-helper(start-date: "May 2022", end-date: "Aug 2022"),
-)
-- Shipped internal tools and turned a 12-step release into one command
+  location: "Byteburg, CA",
+)[
+  #role(
+    title: "Software Engineering Intern",
+    dates: dates-helper(start-date: "May 2022", end-date: "Aug 2022"),
+  )
+  - Shipped internal tools and turned a 12-step release into one command
+]
 
 == Projects
 

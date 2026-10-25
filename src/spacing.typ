@@ -11,7 +11,6 @@
 
   rule-stroke: 0.8pt + luma(35%),
   link-offset: 4pt,
-  row-delta: 0.25pt,
 )
 
 #let spacing-state = state("exp-resume-spacing", default-spacing)

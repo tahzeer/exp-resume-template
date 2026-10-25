@@ -6,5 +6,5 @@
 
 #import "spacing.typ": default-spacing
 #import "helpers.typ": linked-text, generic-two-by-two, generic-one-by-two, dates-helper
-#import "components.typ": summary, edu, work, project, certificates, skills, extracurriculars
+#import "components.typ": summary, edu, employer, role, project, certificates, skills, extracurriculars
 #import "resume.typ": resume

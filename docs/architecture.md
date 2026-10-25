@@ -10,8 +10,8 @@ repository is the fictional John Doe starter under `template/`.
 src/
   lib.typ             Package entrypoint; re-exports the public API.
   resume.typ          The `resume` show-rule function and global layout.
-  components.typ      Section components: summary, edu, work, project,
-                      certificates, skills, extracurriculars.
+  components.typ      Section components: summary, edu, employer, role,
+                      project, certificates, skills, extracurriculars.
   helpers.typ         Low-level helpers: linked-text, generic layouts, dates.
   spacing.typ         Soft-default spacing tokens and spacing state.
 template/
@@ -45,11 +45,11 @@ page, link, heading, paragraph, and block rules before rendering that body.
 
 `resume` merges optional `spacing` overrides into `default-spacing`, updates
 the spacing state used by helpers/components, and renders the name and contact
-row. Components such as `edu`, `work`, `project`, `certificates`, `skills`, and
-`extracurriculars` return formatted content that can be placed below level-two
-headings (`== Section`). The generic helpers use `h(1fr)` as a flexible
-spacer, which pushes dates or links to the right edge without introducing
-visible table borders.
+row. Components such as `edu`, `employer`, `project`, `certificates`,
+`skills`, and `extracurriculars` return formatted content that can be placed
+below level-two headings (`== Section`). The generic helpers use `h(1fr)` as a
+flexible spacer, which pushes dates or links to the right edge without
+introducing visible table borders.
 
 Spacing soft defaults (see `src/spacing.typ`):
 

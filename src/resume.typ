@@ -46,7 +46,11 @@
     if type(it.dest) == str and it.dest.starts-with("tel:") {
       it
     } else {
-      underline(offset: s.link-offset, stroke: s.rule-stroke, it)
+      underline(
+        offset: s.link-offset,
+        stroke: s.rule-stroke.thickness + rgb(accent-color),
+        it,
+      )
     }
   }
 

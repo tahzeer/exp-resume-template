@@ -16,37 +16,58 @@
   dates: "",
   degree: "",
   location: "",
-  consistent: false,
 ) = {
-  if consistent {
+  generic-two-by-two(
+    top-left: strong(institution),
+    top-right: location,
+    bottom-left: emph(degree),
+    bottom-right: emph(dates),
+  )
+}
+
+// The first role draws the company row with itself, as one two-line header.
+#let employer-info = state("exp-resume-employer", none)
+
+// Bottom row of the header: regular title, dates on the right.
+// The first role in an employer also draws the top row: bold company, italic location.
+#let role(
+  title: "",
+  dates: "",
+) = context {
+  let s = spacing-state.get()
+  let info = employer-info.get()
+  let first = info != none and not info.used
+
+  if first {
+    employer-info.update(info + (used: true))
     generic-two-by-two(
-      top-left: strong(institution),
-      top-right: dates,
-      bottom-left: emph(degree),
-      bottom-right: emph(location),
+      top-left: strong(info.company),
+      top-right: emph(info.location),
+      bottom-left: title,
+      bottom-right: dates,
     )
   } else {
-    generic-two-by-two(
-      top-left: strong(institution),
-      top-right: location,
-      bottom-left: emph(degree),
-      bottom-right: emph(dates),
-    )
+    block(width: 100%, above: s.gap, below: s.row)[
+      #title #h(1fr) #dates
+    ]
   }
 }
 
-#let work(
-  title: "",
-  dates: "",
+// One company, then one or more `#role` lines and their bullets.
+// The first role is the lower line of the company header.
+// A later role uses the same `gap` above it as any other entry header.
+#let employer(
   company: "",
   location: "",
+  body,
 ) = {
-  generic-two-by-two(
-    top-left: strong(title),
-    top-right: dates,
-    bottom-left: company,
-    bottom-right: emph(location),
-  )
+  employer-info.update((
+    company: company,
+    location: location,
+    used: false,
+  ))
+  body
+  employer-info.update(none)
 }
 
 #let project(

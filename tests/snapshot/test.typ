@@ -35,8 +35,8 @@
  * Lines that start with == are formatted into section headings.
  * Available formatting functions include:
  * #summary(body)
- * #edu(dates: "", degree: "", institution: "", location: "", consistent: false)
- * #work(company: "", dates: "", location: "", title: "")
+ * #edu(dates: "", degree: "", institution: "", location: "")
+ * #employer(company: "", location: "")[ #role(title: "", dates: "") ]
  * #project(name: "", technologies: "", links: ())
  * #certificates(name: "", issuer: "", url: "", url-text: "", date: "")
  * #skills(category: "", items: "")
@@ -65,24 +65,47 @@
 
 == Work Experience
 
-#work(
-  title: "Software Engineer",
-  location: "Example City, EX",
+#employer(
   company: "Example Corporation",
-  dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
-)
-- Built reliable services and internal tools for a growing customer platform
-- Improved deployment workflows and reduced routine release time by 40\%
-- Collaborated with product and infrastructure teams to deliver measurable results
-
-#work(
-  title: "Engineering Intern",
   location: "Example City, EX",
+)[
+  #role(
+    title: "Software Engineer",
+    dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
+  )
+  - Built reliable services and internal tools for a growing customer platform
+  - Improved deployment workflows and reduced routine release time by 40\%
+  - Collaborated with product and infrastructure teams to deliver measurable results
+]
+
+#employer(
   company: "Example Labs",
-  dates: dates-helper(start-date: "Jun 2023", end-date: "Aug 2023"),
-)
-- Implemented product improvements with a focus on testing and maintainability
-- Automated recurring analysis tasks and documented the resulting workflow
+  location: "Example City, EX",
+)[
+  #role(
+    title: "Engineering Intern",
+    dates: dates-helper(start-date: "Jun 2023", end-date: "Aug 2023"),
+  )
+  - Implemented product improvements with a focus on testing and maintainability
+  - Automated recurring analysis tasks and documented the resulting workflow
+]
+
+#employer(
+  company: "Example Holdings",
+  location: "Remote",
+)[
+  #role(
+    title: "Staff Engineer",
+    dates: dates-helper(start-date: "Jan 2022", end-date: "May 2023"),
+  )
+  - Led a second product line after the promotion
+
+  #role(
+    title: "Engineer",
+    dates: dates-helper(start-date: "Jun 2021", end-date: "Dec 2021"),
+  )
+  - Shipped the first internal tool for that team
+]
 
 == Projects
 

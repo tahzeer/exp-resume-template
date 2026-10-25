@@ -13,7 +13,7 @@ repository.
 
 - `src/` contains the reusable implementation and public helpers.
   - `resume.typ` — document shell, contact row, section headings
-  - `components.typ` — `summary`, `edu`, `work`, `project`, `certificates`, `skills`, `extracurriculars`
+  - `components.typ` — `summary`, `edu`, `employer`, `role`, `project`, `certificates`, `skills`, `extracurriculars`
   - `helpers.typ` — layout helpers and `dates-helper`
   - `spacing.typ` — soft-default spacing tokens (`default-spacing`)
   - `lib.typ` — package entrypoint / re-exports
@@ -51,13 +51,16 @@ The central pattern is:
 
 == Experience
 
-#work(
-  title: "Software Engineer",
+#employer(
   company: "Example Corporation",
   location: "Example City, EX",
-  dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
-)
-- Replace this placeholder with an accomplishment.
+)[
+  #role(
+    title: "Software Engineer",
+    dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
+  )
+  - Replace this placeholder with an accomplishment.
+]
 
 == Skills
 

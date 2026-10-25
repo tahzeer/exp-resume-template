@@ -47,13 +47,16 @@ body:
 
 == Experience
 
-#work(
-  title: "Software Engineer",
+#employer(
   company: "Example Corporation",
   location: "Example City, EX",
-  dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
-)
-- Replace this placeholder with an accomplishment.
+)[
+  #role(
+    title: "Software Engineer",
+    dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
+  )
+  - Replace this placeholder with an accomplishment.
+]
 
 == Skills
 
@@ -133,9 +136,8 @@ Or merge with the exported defaults:
   [`after-header`], [Space under the contact row],
   [`after-section-title`], [Space between the section title and its rule],
   [`after-section-rule`], [Space between the section rule and body],
-  [`rule-stroke`], [Stroke for section rules and link underlines],
+  [`rule-stroke`], [Stroke for section rules],
   [`link-offset`], [Underline offset under links],
-  [`row-delta`], [Optical size nudge between the two rows of `generic-two-by-two`],
 )
 
 = Section Components
@@ -164,19 +166,33 @@ italic emphasis inside the argument strings is preserved.
 )
 ```
 
-Set `consistent: true` to move the dates to the top-right and the location to
-the bottom-right, matching the other components.
+The institution and location sit on the first line. The degree and dates sit
+on the second. Both lines use the body size.
 
-== Work Experience
+== Experience
+
+`employer` is the same two-line header as a single job. The company is bold
+on the left and the location is italic on the right. The title is regular on
+the left and the dates are on the right. A later role repeats that title line,
+with the same `gap` above it as any other entry header.
 
 ```typst
-#work(
-  title: "Software Engineer",
+#employer(
   company: "Example Corporation",
-  location: "Example City, EX",
-  dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
-)
-- Built reliable services and shipped measurable improvements.
+  location: "Remote",
+)[
+  #role(
+    title: "Senior Software Engineer",
+    dates: dates-helper(start-date: "Jun 2024", end-date: "Present"),
+  )
+  - Built reliable services and shipped measurable improvements.
+
+  #role(
+    title: "Software Engineer",
+    dates: dates-helper(start-date: "Jun 2022", end-date: "May 2024"),
+  )
+  - Shipped the first version of the service.
+]
 ```
 
 == Projects
@@ -265,8 +281,8 @@ both sides explicitly.
 == generic-two-by-two
 
 Places two pairs on two lines, with each right-hand cell pushed to the right
-edge. Same default above/below behavior as `generic-one-by-two`. The top row
-is slightly larger than the bottom row by `row-delta`.
+edge. Both rows use the body size. Same default above/below behavior as
+`generic-one-by-two`.
 
 ```typst
 #generic-two-by-two(
