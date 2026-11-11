@@ -9,7 +9,7 @@ Breaking changes:
 - Links use a normal underline. Phone numbers stay plain. `link-offset` is gone
 - `#summary` is gone. Write the summary as a paragraph under the heading
 - Project technologies sit in parentheses after the name. A missing or blank stack prints the name only
-- `section-content-inset`, `after-section-title`, and `after-section-rule` are gone. Section headings are not indented, and the rule spacing is fixed
+- `section-content-inset`, `after-section-title`, and `after-section-rule` are gone. Section headings are not indented, and the rule spacing is fixed. The section rule is `0.5pt`
 - Settings live in four dictionaries in `config.typ`: `person`, `placement`, `page`, and `spacing`. `resume.with` merges an override onto each default. `author` is `person.name`, `author-position` is `placement.name`, `personal-info-position` is `placement.contact`, and `author-font-size` is `page.name-size`. Spacing keys are `line-spacing`, `block-spacing`, `item-spacing`, `after-header`, and `section-rule`
 
 ## [v0.2.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.2.0)
