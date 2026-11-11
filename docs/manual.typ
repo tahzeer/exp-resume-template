@@ -142,7 +142,7 @@ Empty person fields are skipped. The template shows the full set.
   [`block-spacing`], [Space between paragraphs and above an entry header. Default: 0.85em],
   [`item-spacing`], [Space under an entry title before its bullets, and between certificate and skill rows. Default: 0.75em],
   [`after-header`], [Space under the name and contact. Default: 0.25em],
-  [`section-rule`], [Line under a section title. Default: `0.75pt`],
+  [`section-rule`], [Line under a section title. Default: `0.5pt`],
 )
 
 = Section Components

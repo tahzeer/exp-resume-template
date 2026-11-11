@@ -33,7 +33,7 @@
   block-spacing: 0.85em,
   item-spacing: 0.75em,
   after-header: 0.25em,
-  section-rule: 0.75pt,
+  section-rule: 0.5pt,
 )
 
 #let spacing-state = state("exp-resume-spacing", default-spacing)
