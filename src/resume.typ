@@ -66,7 +66,7 @@
   // Negative pads pull the section rule up against the title.
   show heading.where(level: 2): it => {
     pad(bottom: -2pt)[
-      #set text(weight: 400)
+      #set text(weight: 500)
       #pad(top: 0pt, bottom: -10pt, smallcaps(it.body))
       #line(length: 100%, stroke: s.at("section-rule"))
     ]
