@@ -1,6 +1,5 @@
 #import "../../src/lib.typ": *
 
-// Keep this regression fixture generic while exercising the public API.
 #let name = "John Doe"
 #let location = "Example City, EX"
 #let email = "john.doe@example.com"
@@ -14,43 +13,31 @@
 #let personal-site-text = "example.com"
 
 #show: resume.with(
-  author: name,
-  location: location,
-  email: email,
-  email-text: email-text,
-  github: github,
-  github-text: github-text,
-  linkedin: linkedin,
-  linkedin-text: linkedin-text,
-  phone: phone,
-  personal-site: personal-site,
-  personal-site-text: personal-site-text,
-  accent-color: "#26428b",
-  author-position: center,
-  personal-info-position: center,
-  section-content-inset: 0pt
+  person: (
+    name: name,
+    location: location,
+    email: email,
+    email-text: email-text,
+    github: github,
+    github-text: github-text,
+    linkedin: linkedin,
+    linkedin-text: linkedin-text,
+    phone: phone,
+    personal-site: personal-site,
+    personal-site-text: personal-site-text,
+  ),
+  placement: (
+    name: center,
+    contact: center,
+  ),
+  page: (
+    accent-color: "#26428b",
+  ),
 )
 
-/*
- * Lines that start with == are formatted into section headings.
- * Available formatting functions include:
- * #summary(body)
- * #edu(dates: "", degree: "", institution: "", location: "")
- * #employer(company: "", location: "")[ #role(title: "", dates: "") ]
- * #project(name: "", technologies: "", links: ())
- * #certificates(name: "", issuer: "", url: "", url-text: "", date: "")
- * #skills(category: "", items: "")
- * #extracurriculars(activity: "", dates: "")
- *
- * Generic layout helpers:
- * #generic-two-by-two(top-left: "", top-right: "", bottom-left: "", bottom-right: "")
- * #generic-one-by-two(left: "", right: "")
- * #dates-helper(start-date: "", end-date: "")
- * #linked-text(value, link-prefix: "", text: "")
- */
 == Summary
 
-#summary[Software engineer with experience building reliable services and internal tools. Focused on clear APIs, automated testing, and documentation.]
+Software engineer with experience building reliable services and internal tools. Focused on clear APIs, automated testing, and documentation.
 
 == Education
 

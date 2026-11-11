@@ -1,4 +1,4 @@
-#import "@preview/exp-resume:0.2.0": *
+#import "@preview/exp-resume:0.3.0": *
 
 // Replace the example values below with your own information.
 #let name = "John Doe"
@@ -14,30 +14,33 @@
 #let personal-site-text = "johndoe.dev"
 
 #show: resume.with(
-  author: name,
-  // All the lines below are optional. Comment out any value you do not need.
-  location: location,
-  email: email,
-  email-text: email-text,
-  github: github,
-  github-text: github-text,
-  linkedin: linkedin,
-  linkedin-text: linkedin-text,
-  phone: phone,
-  personal-site: personal-site,
-  personal-site-text: personal-site-text,
-  accent-color: "#000000",
-  font: "New Computer Modern",
-  paper: "us-letter",
-  author-position: center,
-  personal-info-position: center,
-  section-content-inset: 0pt
+  // Comment out any value you do not need.
+  person: (
+    name: name,
+    location: location,
+    email: email,
+    email-text: email-text,
+    github: github,
+    github-text: github-text,
+    linkedin: linkedin,
+    linkedin-text: linkedin-text,
+    phone: phone,
+    personal-site: personal-site,
+    personal-site-text: personal-site-text,
+  ),
+  placement: (
+    name: center,
+    contact: center,
+  ),
+  page: (
+    accent-color: "#000000",
+    font: "New Computer Modern",
+    paper: "us-letter",
+  ),
 )
 
 /*
- * Lines that start with == are formatted into section headings.
- * Available formatting functions include:
- * #summary(body)
+ * Section headings use ==. Components:
  * #edu(dates: "", degree: "", institution: "", location: "")
  * #employer(company: "", location: "")[ #role(title: "", dates: "") ]
  * #project(name: "", technologies: "", links: ())
@@ -50,12 +53,12 @@
  * #generic-one-by-two(left: "", right: "")
  * #dates-helper(start-date: "", end-date: "")
  * #linked-text(value, link-prefix: "", text: "")
- * #default-spacing  // resume.with(spacing: (...)) overrides
+ * #default-person, #default-placement, #default-page, #default-spacing
  */
 
 == Summary
 
-#summary[Engineer who ships reliable systems, writes boringly good docs, and consults rubber ducks before merging.]
+Engineer who ships reliable systems, writes boringly good docs, and consults rubber ducks before merging.
 
 == Education
 
@@ -78,6 +81,8 @@
     dates: dates-helper(start-date: "Jul 2023", end-date: "Present"),
   )
   - Built reliable services and cut deploy anxiety with predictable CI
+    - Told the cache the deploy was a drill so it would stay calm
+    - Kept the old path on call in case the new one got stage fright
   - Wrote runbooks so clear that on-call stopped being a contact sport
 
   #role(
