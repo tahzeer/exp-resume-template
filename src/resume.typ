@@ -1,112 +1,76 @@
 #import "helpers.typ": linked-text
-#import "spacing.typ": default-spacing, spacing-state
+#import "config.typ": default-person, default-placement, default-page, default-spacing, spacing-state
+
+// The page parameter shadows the built-in page function.
+#let page-set = page
 
 #let resume(
-  author: "",
-  author-position: left,
-  personal-info-position: left,
-  pronouns: "",
-  location: "",
-  email: "",
-  email-text: "",
-  github: "",
-  github-text: "",
-  linkedin: "",
-  linkedin-text: "",
-  phone: "",
-  personal-site: "",
-  personal-site-text: "",
-  accent-color: "#000000",
-  font: "New Computer Modern",
-  paper: "us-letter",
-  author-font-size: 20pt,
-  font-size: 10pt,
-  section-content-inset: 2pt,
+  person: (:),
+  placement: (:),
+  page: (:),
   spacing: (:),
-  lang: "en",
   body,
 ) = {
+  let who = default-person + person
+  let place = default-placement + placement
+  let p = default-page + page
   let s = default-spacing + spacing
 
-  set document(author: author, title: author)
-
-  set text(
-    font: font,
-    size: font-size,
-    lang: lang,
-    ligatures: false,
-  )
-
-  set page(
-    margin: (0.5in),
-    paper: paper,
-  )
+  set document(author: who.name, title: who.name)
+  set text(font: p.font, size: p.at("font-size"), lang: p.lang, ligatures: false)
+  set page-set(margin: p.margin, paper: p.paper)
 
   show link: it => {
+    set text(fill: rgb(p.at("accent-color")))
     if type(it.dest) == str and it.dest.starts-with("tel:") {
       it
     } else {
-      underline(
-        offset: s.link-offset,
-        stroke: s.rule-stroke.thickness + rgb(accent-color),
-        it,
-      )
+      underline(it)
     }
   }
 
-  show heading: set text(
-    fill: rgb(accent-color),
-  )
-
-  show link: set text(
-    fill: rgb(accent-color),
-  )
-
+  show heading: set text(fill: rgb(p.at("accent-color")))
   show heading.where(level: 1): it => [
-    #set align(author-position)
-    #set text(
-      weight: 600,
-      size: author-font-size,
-    )
+    #set align(place.name)
+    #set text(weight: 600, size: p.at("name-size"))
     #pad(it.body)
   ]
 
   spacing-state.update(s)
+  [= #(who.name)]
 
-  [= #(author)]
-
-  pad(
-    top: 0em,
-    bottom: s.after-header,
-    align(personal-info-position)[
-      #{
-        let items = (
-          linked-text(pronouns),
-          linked-text(phone, link-prefix: "tel:"),
-          linked-text(location),
-          linked-text(email, link-prefix: "mailto:", text: email-text),
-          linked-text(linkedin, link-prefix: "https://", text: linkedin-text),
-          linked-text(github, link-prefix: "https://", text: github-text),
-          linked-text(personal-site, link-prefix: "https://", text: personal-site-text),
-        )
-        items.filter(x => x != none).join(" | ")
-      }
-    ],
-  )
-
-  set par(justify: true, leading: s.leading, spacing: s.gap)
-  set block(spacing: s.gap)
-  // Tight lists otherwise attach with leading and ignore the entry header's below.
-  show list: set block(above: s.row)
-
-  pad(left: section-content-inset, {
-    show heading.where(level: 2): it => {
-      pad(left: -section-content-inset, bottom: s.after-section-rule)[
-        #set text(weight: 400)
-        #pad(top: 0pt, bottom: s.after-section-title, [#smallcaps(it.body)])
-        #line(length: 100% + section-content-inset, stroke: s.rule-stroke)
-      ]
+  pad(top: 0em, bottom: s.at("after-header"), align(place.contact)[
+    #{
+      let items = (
+        linked-text(who.pronouns),
+        linked-text(who.phone, link-prefix: "tel:"),
+        linked-text(who.location),
+        linked-text(who.email, link-prefix: "mailto:", text: who.at("email-text")),
+        linked-text(who.linkedin, link-prefix: "https://", text: who.at("linkedin-text")),
+        linked-text(who.github, link-prefix: "https://", text: who.at("github-text")),
+        linked-text(
+          who.at("personal-site"),
+          link-prefix: "https://",
+          text: who.at("personal-site-text"),
+        ),
+      )
+      items.filter(x => x != none).join(" | ")
     }
-    body
-  })
+  ])
+
+  set par(justify: true, leading: s.at("line-spacing"), spacing: s.at("block-spacing"))
+  set block(spacing: s.at("block-spacing"))
+  // A tight list would swallow the space under an entry header.
+  show list: set block(above: s.at("item-spacing"))
+
+  // Negative pads pull the section rule up against the title.
+  show heading.where(level: 2): it => {
+    pad(bottom: -2pt)[
+      #set text(weight: 400)
+      #pad(top: 0pt, bottom: -10pt, smallcaps(it.body))
+      #line(length: 100%, stroke: s.at("section-rule"))
+    ]
+  }
+
+  body
 }

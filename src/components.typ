@@ -1,14 +1,9 @@
 #import "helpers.typ": linked-text, generic-two-by-two, generic-one-by-two
-#import "spacing.typ": spacing-state
+#import "config.typ": spacing-state
 
-#let summary(body) = {
-  body
-}
-
-// Single full-width row used by certificates and skills (same spacing).
 #let info-row(body) = context {
   let s = spacing-state.get()
-  block(width: 100%, spacing: s.row, body)
+  block(width: 100%, spacing: s.at("item-spacing"), body)
 }
 
 #let edu(
@@ -20,21 +15,18 @@
   generic-two-by-two(
     top-left: strong(institution),
     top-right: location,
-    bottom-left: emph(degree),
-    bottom-right: emph(dates),
+    bottom-left: degree,
+    bottom-right: dates,
   )
 }
 
-// The first role draws the company row with itself, as one two-line header.
+// The first role draws the company. Later roles are one line.
 #let employer-info = state("exp-resume-employer", none)
 
-// Bottom row of the header: regular title, dates on the right.
-// The first role in an employer also draws the top row: bold company, italic location.
 #let role(
   title: "",
   dates: "",
 ) = context {
-  let s = spacing-state.get()
   let info = employer-info.get()
   let first = info != none and not info.used
 
@@ -42,20 +34,15 @@
     employer-info.update(info + (used: true))
     generic-two-by-two(
       top-left: strong(info.company),
-      top-right: emph(info.location),
+      top-right: info.location,
       bottom-left: title,
       bottom-right: dates,
     )
   } else {
-    block(width: 100%, above: s.gap, below: s.row)[
-      #title #h(1fr) #dates
-    ]
+    generic-one-by-two(left: title, right: dates)
   }
 }
 
-// One company, then one or more `#role` lines and their bullets.
-// The first role is the lower line of the company header.
-// A later role uses the same `gap` above it as any other entry header.
 #let employer(
   company: "",
   location: "",
@@ -83,10 +70,17 @@
       text: item.at("text", default: ""),
     ))
 
+  let stack = if technologies == none {
+    ""
+  } else if type(technologies) == str {
+    technologies.trim()
+  } else {
+    technologies
+  }
+  let has-stack = type(stack) != str or stack != ""
+
   generic-one-by-two(
-    left: {
-      [*#name*#if technologies != "" [ #sym.dash.em #technologies]]
-    },
+    left: [*#name*#if has-stack [ (#stack)]],
     right: link-items.join([ ∙ ]),
   )
 }
@@ -111,9 +105,7 @@
   category: "",
   items: "",
 ) = {
-  info-row[
-    *#category*: #items
-  ]
+  info-row[*#category*: #items]
 }
 
 #let extracurriculars(
