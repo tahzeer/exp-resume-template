@@ -4,7 +4,7 @@
 #set heading(numbering: "1.")
 
 #let pkg = "exp-resume"
-#let version = "0.2.0"
+#let version = "0.3.0"
 
 = Introduction
 
@@ -40,9 +40,11 @@ body:
 #import "@preview/#pkg:#version": *
 
 #show: resume.with(
-  author: "John Doe",
-  email: "john.doe@example.com",
-  accent-color: "#26428b",
+  person: (
+    name: "John Doe",
+    email: "john.doe@example.com",
+  ),
+  page: (accent-color: "#26428b"),
 )
 
 == Experience
@@ -71,88 +73,97 @@ a rule underneath.
 
 = Resume Configuration
 
-The `resume` function accepts the following parameters:
-
-#table(
-  columns: (auto, 1fr),
-  [*Parameter*], [*Description*],
-  [author], [Your name, shown as a level-one heading],
-  [location], [City and country or region, shown in the contact row],
-  [email], [Email address, linked with `mailto:`],
-  [email-text], [Optional display text for the email link],
-  [github], [GitHub handle, linked with `https://`],
-  [github-text], [Optional display text for the GitHub link],
-  [linkedin], [LinkedIn handle, linked with `https://`],
-  [linkedin-text], [Optional display text for the LinkedIn link],
-  [phone], [Phone number, linked with `tel:`],
-  [personal-site], [Personal site, linked with `https://`],
-  [personal-site-text], [Optional display text for the personal site link],
-  [accent-color], [Color for headings and links, defaults to black],
-  [font], [Body font, defaults to "New Computer Modern"],
-  [paper], [Page paper, defaults to "us-letter"],
-  [font-size], [Body font size, defaults to 10pt],
-  [author-font-size], [Name size, defaults to 20pt],
-  [lang], [Document language, defaults to "en"],
-  [pronouns], [Optional pronouns, shown in the contact row],
-  [author-position], [Alignment of the name, defaults to left],
-  [personal-info-position], [Alignment of the contact row, defaults to left],
-  [section-content-inset], [Body indent under section titles, defaults to 2pt],
-  [spacing], [Optional spacing overrides; see Spacing below],
-)
-
-Parameters that are optional can be omitted or set to `""`. The template
-contains commented example values.
-
-= Spacing
-
-`default-spacing` is exported from the package and used when `spacing` is
-omitted. It is a soft recommendation: examples leave it unset. Pass a partial
-dictionary to override keys:
-
-```typst
-#import "@preview/#pkg:#version": *
-
-#show: resume.with(
-  author: "John Doe",
-  spacing: (gap: 0.85em, row: 0.65em),
-)
-```
-
-Or merge with the exported defaults:
+Defaults live in `config.typ` as four dictionaries: `default-person`,
+`default-placement`, `default-page`, and `default-spacing`. Pass a partial
+dictionary to override one group:
 
 ```typst
 #show: resume.with(
-  author: "John Doe",
-  spacing: default-spacing + (leading: 0.5em),
+  person: (
+    name: "John Doe",
+    email: "john.doe@example.com",
+  ),
+  placement: (name: center, contact: center),
+  page: (accent-color: "#26428b"),
+  spacing: (block-spacing: 0.85em),
 )
 ```
+
+Empty person fields are skipped. The template shows the full set.
+
+== Person
 
 #table(
   columns: (auto, 1fr),
   [*Key*], [*Role*],
-  [`leading`], [Paragraph leading (line rhythm inside a paragraph)],
-  [`gap`], [Paragraph spacing and space above entry headers],
-  [`row`], [Certificate/skill row spacing, and space under an entry title before its first bullet],
-  [`after-header`], [Space under the contact row],
-  [`after-section-title`], [Space between the section title and its rule],
-  [`after-section-rule`], [Space between the section rule and body],
-  [`rule-stroke`], [Stroke for section rules],
-  [`link-offset`], [Underline offset under links],
+  [`name`], [Shown as the title and stored as the document author],
+  [`pronouns`], [Contact row],
+  [`location`], [Contact row],
+  [`phone`], [Contact row, linked with `tel:` and not underlined],
+  [`email`], [Contact row, linked with `mailto:`],
+  [`email-text`], [Optional display text for the email link],
+  [`github`], [Contact row, linked with `https://`],
+  [`github-text`], [Optional display text for the GitHub link],
+  [`linkedin`], [Contact row, linked with `https://`],
+  [`linkedin-text`], [Optional display text for the LinkedIn link],
+  [`personal-site`], [Contact row, linked with `https://`],
+  [`personal-site-text`], [Optional display text for the personal site link],
+)
+
+== Placement
+
+#table(
+  columns: (auto, 1fr),
+  [*Key*], [*Role*],
+  [`name`], [Alignment of the name. Default: left],
+  [`contact`], [Alignment of the contact row. Default: left],
+)
+
+== Page
+
+#table(
+  columns: (auto, 1fr),
+  [*Key*], [*Role*],
+  [`font`], [Body font. Default: "New Computer Modern"],
+  [`font-size`], [Body size. Default: 10pt],
+  [`name-size`], [Name size. Default: 20pt],
+  [`accent-color`], [Headings and links. Default: `"#000000"`],
+  [`paper`], [Page paper. Default: `"us-letter"`],
+  [`margin`], [Space between the page edge and the content. Default: 0.5in],
+  [`lang`], [Document language. Default: `"en"`],
+)
+
+== Spacing
+
+#table(
+  columns: (auto, 1fr),
+  [*Key*], [*Role*],
+  [`line-spacing`], [Space between lines inside a paragraph. Default: 0.5em],
+  [`block-spacing`], [Space between paragraphs and above an entry header. Default: 0.85em],
+  [`item-spacing`], [Space under an entry title before its bullets, and between certificate and skill rows. Default: 0.75em],
+  [`after-header`], [Space under the name and contact. Default: 0.25em],
+  [`section-rule`], [Line under a section title. Default: `0.75pt`],
 )
 
 = Section Components
 
-Each component is placed directly below a `== Section` heading. Bold and
-italic emphasis inside the argument strings is preserved.
+Each component is placed directly below a `== Section` heading. Pass Typst
+content to style a field: `title: emph[Engineer]` is italic, and a quoted
+string is printed as written. School, company, project name, certificate name,
+skill category, and activity are already bold, so `emph` on those is bold
+italic. Link addresses stay plain strings. `dates-helper` joins strings, so
+wrap its result, as in `dates: emph(dates-helper(...))`. Bullets and the
+summary take normal Typst markup.
 
 == Summary
 
-#raw("summary", lang: "typst") renders a justified paragraph below a heading:
+A paragraph under the heading. It uses the same justified body text as the
+rest of the resume.
 
 ```typst
 == Summary
 
-#summary[Backend engineer experienced in scaling distributed services.]
+Backend engineer experienced in scaling distributed services.
 ```
 
 == Education
@@ -167,14 +178,15 @@ italic emphasis inside the argument strings is preserved.
 ```
 
 The institution and location sit on the first line. The degree and dates sit
-on the second. Both lines use the body size.
+on the second. The institution is bold. The location, degree, and dates are
+regular.
 
 == Experience
 
 `employer` is the same two-line header as a single job. The company is bold
-on the left and the location is italic on the right. The title is regular on
-the left and the dates are on the right. A later role repeats that title line,
-with the same `gap` above it as any other entry header.
+on the left and the location is regular on the right. The title and the
+dates are regular. A later role repeats that title line, with the same
+`block-spacing` above it as any other entry header.
 
 ```typst
 #employer(
@@ -213,7 +225,7 @@ Pass multiple `links` as `(url, text)` dictionaries. They are joined with
 
 == Certificates
 
-One row per call. Consecutive rows share the `row` spacing token.
+One row per call. Consecutive rows share the `item-spacing` length.
 
 ```typst
 #certificates(
@@ -252,7 +264,7 @@ used to build custom entries.
 
 == dates-helper
 
-Formats a start and end date with an em dash. Pass only an end date to omit
+Formats a start and end date with an en dash. Pass only an end date to omit
 the dash:
 
 ```typst
@@ -271,7 +283,7 @@ Renders `value` as a hyperlink when a `link-prefix` is given, optionally using
 == generic-one-by-two
 
 Places `left` and `right` on one line, with `right` pushed to the right edge.
-By default uses `gap` above and `row` below. Pass `spacing: <length>` to set
+By default uses `block-spacing` above and `item-spacing` below. Pass `spacing: <length>` to set
 both sides explicitly.
 
 ```typst

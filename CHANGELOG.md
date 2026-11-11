@@ -1,5 +1,17 @@
 # Exp Resume Changelog
 
+## [v0.3.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.3.0)
+
+Breaking changes:
+
+- Education and experience keep the two-line header. Only the top-left cell is bold: the school and the company. Location, degree, dates, and job title are regular
+- Page margin stays 0.5in and is set with `page.margin`
+- Links use a normal underline. Phone numbers stay plain. `link-offset` is gone
+- `#summary` is gone. Write the summary as a paragraph under the heading
+- Project technologies sit in parentheses after the name. A missing or blank stack prints the name only
+- `section-content-inset`, `after-section-title`, and `after-section-rule` are gone. Section headings are not indented, and the rule spacing is fixed
+- Settings live in four dictionaries in `config.typ`: `person`, `placement`, `page`, and `spacing`. `resume.with` merges an override onto each default. `author` is `person.name`, `author-position` is `placement.name`, `personal-info-position` is `placement.contact`, and `author-font-size` is `page.name-size`. Spacing keys are `line-spacing`, `block-spacing`, `item-spacing`, `after-header`, and `section-rule`
+
 ## [v0.2.0](https://github.com/tahzeer/exp-resume-template/releases/tag/v0.2.0)
 
 Breaking changes to the experience header:

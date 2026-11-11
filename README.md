@@ -13,9 +13,9 @@ repository.
 
 - `src/` contains the reusable implementation and public helpers.
   - `resume.typ` — document shell, contact row, section headings
-  - `components.typ` — `summary`, `edu`, `employer`, `role`, `project`, `certificates`, `skills`, `extracurriculars`
+  - `components.typ` — `edu`, `employer`, `role`, `project`, `certificates`, `skills`, `extracurriculars`
   - `helpers.typ` — layout helpers and `dates-helper`
-  - `spacing.typ` — soft-default spacing tokens (`default-spacing`)
+  - `config.typ` — defaults for `person`, `placement`, `page`, and `spacing`
   - `lib.typ` — package entrypoint / re-exports
 - `template/main.typ` is the John Doe starter copied by `typst init`.
 - `tests/` contains regression documents for the implementation.
@@ -32,7 +32,7 @@ repository.
 Create a document from the published template (version from `typst.toml`):
 
 ```sh
-typst init @preview/exp-resume:0.2.0
+typst init @preview/exp-resume:0.3.0
 ```
 
 The generated `main.typ` contains the complete John Doe placeholder and the
@@ -41,12 +41,14 @@ available component functions.
 The central pattern is:
 
 ```typst
-#import "@preview/exp-resume:0.2.0": *
+#import "@preview/exp-resume:0.3.0": *
 
 #show: resume.with(
-  author: "John Doe",
-  email: "john.doe@example.com",
-  accent-color: "#26428b",
+  person: (
+    name: "John Doe",
+    email: "john.doe@example.com",
+  ),
+  page: (accent-color: "#26428b"),
 )
 
 == Experience
@@ -70,30 +72,20 @@ The central pattern is:
 )
 ```
 
-### Spacing (optional)
+### Groups (optional)
 
-Defaults live in `default-spacing` and are applied by `#resume`. Override one
-or more keys when needed:
-
-```typst
-#show: resume.with(
-  author: "John Doe",
-  spacing: (gap: 0.85em, row: 0.65em),
-)
-```
-
-Or merge with the exported defaults:
+Defaults live in `default-person`, `default-placement`, `default-page`, and
+`default-spacing`. Pass only the keys you want to change:
 
 ```typst
 #show: resume.with(
-  author: "John Doe",
-  spacing: default-spacing + (leading: 0.5em),
+  person: (name: "John Doe"),
+  placement: (name: center, contact: center),
+  spacing: (block-spacing: 0.85em, item-spacing: 0.65em),
 )
 ```
 
-Common keys: `leading` (line rhythm), `gap` (paragraph / space above entries),
-`row` (certificate & skill rows, and space under an entry title before its
-first bullet). See the [manual](docs/manual.pdf) for the full map.
+See the [manual](docs/manual.pdf) for every key.
 
 ## Local Development
 

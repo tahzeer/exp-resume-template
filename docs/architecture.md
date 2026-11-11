@@ -10,10 +10,10 @@ repository is the fictional John Doe starter under `template/`.
 src/
   lib.typ             Package entrypoint; re-exports the public API.
   resume.typ          The `resume` show-rule function and global layout.
-  components.typ      Section components: summary, edu, employer, role,
+  components.typ      Section components: edu, employer, role,
                       project, certificates, skills, extracurriculars.
   helpers.typ         Low-level helpers: linked-text, generic layouts, dates.
-  spacing.typ         Soft-default spacing tokens and spacing state.
+  config.typ          Defaults for person, placement, page, and spacing.
 template/
   main.typ            John Doe starter copied by `typst init`.
 docs/
@@ -34,7 +34,7 @@ After publication, a document should import the package namespace at the version
 from `typst.toml`:
 
 ```typst
-#import "@preview/exp-resume:0.2.0": *
+#import "@preview/exp-resume:0.3.0": *
 ```
 
 ## Typst Flow
@@ -43,26 +43,20 @@ The document starts with `#show: resume.with(...)`. Typst passes the rest of
 the document as the `body` argument to `resume`, which establishes global text,
 page, link, heading, paragraph, and block rules before rendering that body.
 
-`resume` merges optional `spacing` overrides into `default-spacing`, updates
-the spacing state used by helpers/components, and renders the name and contact
-row. Components such as `edu`, `employer`, `project`, `certificates`,
-`skills`, and `extracurriculars` return formatted content that can be placed
-below level-two headings (`== Section`). The generic helpers use `h(1fr)` as a
-flexible spacer, which pushes dates or links to the right edge without
-introducing visible table borders.
-
-Spacing soft defaults (see `src/spacing.typ`):
-
-- `leading` — paragraph leading
-- `gap` — paragraph spacing and space above entry headers
-- `row` — certificate/skill rows, and space under an entry title before its
-  first bullet (lists set `block(above: row)` so tight lists honor this)
+`resume` merges each override dictionary onto the matching default in
+`config.typ`: `person`, `placement`, `page`, and `spacing`. It stores the
+merged spacing where helpers and components can read `block-spacing` and
+`item-spacing`, then renders the name and contact row. Components such as `edu`, `employer`,
+`project`, `certificates`, `skills`, and `extracurriculars` return formatted
+content that can be placed below level-two headings (`== Section`). The
+generic helpers use `h(1fr)` as a flexible spacer, which pushes dates or links
+to the right edge without introducing visible table borders.
 
 ## Development Flow
 
 1. Change the global layout in `src/resume.typ`, section components in
    `src/components.typ`, shared helpers in `src/helpers.typ`, or tokens in
-   `src/spacing.typ`.
+   `src/config.typ`.
 2. Expose intentional customization knobs through `resume` or a component.
 3. Update `template/main.typ` with fictional examples of the public API.
 4. Run `just test` and `just doc`.
